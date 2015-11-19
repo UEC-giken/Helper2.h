@@ -79,7 +79,7 @@
 
 + ランダムな色を表示
 
-#### void InfoRGBHLS()
+#### void debug_print()
 
 + debug用
 + serialにRGBとHLSの値を表示
