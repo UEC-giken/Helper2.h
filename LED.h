@@ -10,9 +10,9 @@ public:
   LEDClass(int8_t num):
     led_num_(num),
     status_(false),
-    red_(0),
-    green_(0),
-    blue_(0)
+    red_(255),
+    green_(255),
+    blue_(255)
   {};
   // LEDClass(const LED& origin){
   //   
