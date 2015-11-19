@@ -28,9 +28,9 @@ bool LED::reflection(){
   }
 }
 
-bool LED::getStatus(){
-  return status_;
-}
+// bool LED::getStatus(){
+//   return status_;
+// }
 
 void LED::color(float hue) {
   hue_ = fmod(hue, 360);

@@ -27,8 +27,7 @@ public:
   // return led status
   bool on();
   bool off();
-  bool reflection();
-  bool getStatus();
+  // bool getStatus();
 
   // led の色相を変更する
   // 色相: 0.0-1.0
@@ -60,6 +59,7 @@ private:
   uint8_t red_, green_, blue_;
   float saturation_, brightness_, hue_;
   
+  bool reflection();
   void SetHLSFromRGB();
   void SetRGBFromHLS();
 };
