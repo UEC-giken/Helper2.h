@@ -10,7 +10,7 @@ void setup(){
   
 void loop(){
   led1.randomcolor();
-  led1.InfoRGBHLS();
+  led1.debug_print();
   led1.on();
   delay(500);
 }
