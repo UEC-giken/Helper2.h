@@ -5,11 +5,14 @@
 
 #include "Helper2_protected.h"
 
+Accel accel;
+
+
 // val の値を min と max の値に収まるようにする
 // val < min         :=> min
 // min <= val <= max :=> val
 // max < val         :=> max
-int clamp(int val, int min, int max) {
+float clamp(float val, float min, float max) {
   if (val < min) { return min; }
   if (max < val) { return max; }
 
@@ -17,7 +20,8 @@ int clamp(int val, int min, int max) {
 }
 
 // I2C
-#define ADXL345_ID 0x1D
+// 直接接続だと 0x53, そうでないと 0x1D
+#define ADXL345_ID 0x53
 
 // 加速度センサ
 ADXL345 adxl;
@@ -25,14 +29,19 @@ ADXL345 adxl;
 void initialize() {
   accel = Accel();
 
+  // ピン初期化
+  // pinMode(2,OUTPUT);
+  // digitalWrite(2,LOW);
+
   // 加速度センサ初期化
-  sendi2c(ADXL345_ID, 0x2C, B00001100);//3200Hz書き出し
-  sendi2c(ADXL345_ID, 0x31, B00001000);//fullresmode
+  sendi2c(ADXL345_ID, 0x2C, 0b00001100); //3200Hz書き出し
+  sendi2c(ADXL345_ID, 0x31, 0b00001000); //fullresmode
   initializeAccelerometer();
 
   // タイマー1
   //割り込み周期[usec]//887@16MH動作//8Mhz動作なら単純に考えて倍
-  Timer1.initialize(6000);
+  Timer1.initialize(800);
+  // Timer1.initialize(6000);
   Timer1.attachInterrupt(interrupt); //割り込みする関数
 
   // debug用
@@ -53,26 +62,36 @@ void updateData() {
     sumz += rawz;
   }
 
-  // sum(x, y, z) は -10240 - 10240 をとる?
-  // 1G で x, y: 4900, z: 4500 ぐらいの値をとる => (x, y は 610, z は 560 で割って clamp して) -8 - 8 に縮める
-  // by kyontan
-  // NOTE: 割る値 は適宜調整してください
-  int8_t x = clamp(-sumx / 610, -8, 8);
-  int8_t y = clamp(-sumy / 610, -8, 8);
-  int8_t z = clamp(-sumz / 560, -8, 8);
+  // // sum(x, y, z) は -10240 - 10240 をとる?
+  // // 1G で x, y: 4900, z: 4500 ぐらいの値をとる => 正規化して -1.0 - 1.0 に縮める
+  // // by kyontan
+  // // NOTE: 割る値 は適宜調整してください
+  float x = clamp(-sumx / 4900.0, -1.0, 1.0);
+  float y = clamp(-sumy / 4900.0, -1.0, 1.0);
+  float z = clamp(-sumz / 4500.0, -1.0, 1.0);
 
   accel.x = x;
   accel.y = y;
   accel.z = z;
 };
 
+// loop() の中で呼ばれる
+void wait(int16_t msec) {
+  uint32_t start = millis();
+
+  while ((millis() - start) < msec) {
+    updateData();
+  }
+};
+
 // timer1割り込みで走る関数
 void interrupt() {
-  updateData();
+  // LEDの点滅とかはここでしても良いかも?
+
 };
 
 // I2C通信
-void sendi2c(byte id, byte reg, byte data) {
+void sendi2c(int8_t id, int8_t reg, int8_t data) {
   Wire.beginTransmission(id); // Adxl345 のアドレス: 0x1D
   Wire.write(reg);
   Wire.write(data);
@@ -81,6 +100,7 @@ void sendi2c(byte id, byte reg, byte data) {
 
 void initializeAccelerometer() {
   adxl.powerOn();
+
   adxl.setRangeSetting(2); //測定範囲
   // 動作した or してないの閾値を設定 (0-255)
   adxl.setActivityThreshold(75);    //値:*62.5[mg]
@@ -124,9 +144,9 @@ void initializeAccelerometer() {
   adxl.setInterruptMapping( ADXL345_INT_INACTIVITY_BIT,   ADXL345_INT1_PIN );
 
   //register interupt actions - 1 == on; 0 == off
-  adxl.setInterrupt( ADXL345_INT_SINGLE_TAP_BIT, 1);
-  adxl.setInterrupt( ADXL345_INT_DOUBLE_TAP_BIT, 1);
-  adxl.setInterrupt( ADXL345_INT_FREE_FALL_BIT,  1);
-  adxl.setInterrupt( ADXL345_INT_ACTIVITY_BIT,   1);
-  adxl.setInterrupt( ADXL345_INT_INACTIVITY_BIT, 1);
+  adxl.setInterrupt( ADXL345_INT_SINGLE_TAP_BIT, 0);
+  adxl.setInterrupt( ADXL345_INT_DOUBLE_TAP_BIT, 0);
+  adxl.setInterrupt( ADXL345_INT_FREE_FALL_BIT,  0);
+  adxl.setInterrupt( ADXL345_INT_ACTIVITY_BIT,   0);
+  adxl.setInterrupt( ADXL345_INT_INACTIVITY_BIT, 0);
 }
