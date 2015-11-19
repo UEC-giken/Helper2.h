@@ -26,8 +26,8 @@ ADXL345 adxl;
 
 Accel accel;
 
-LEDClass led1 = LEDClass(0);
-LEDClass led2 = LEDClass(1);
+LED led1 = LED(0);
+LED led2 = LED(1);
 
 void initialize() {
   accel = Accel();
@@ -52,7 +52,7 @@ void initialize() {
   // debug用
   // Serial.begin(9600);
   // Serial.println("started");
-  
+
   delay(1000);//初期状態確認用
 }
 

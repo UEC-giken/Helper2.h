@@ -5,10 +5,11 @@
 
 extern Adafruit_NeoPixel AN_LED;
 
-class LEDClass {
+class LED {
 public:
-  LEDClass(int8_t num):
+  LED(int8_t num):
     led_num_(num),
+
     status_(false)
   {
     rgb_[0] = 100;
@@ -16,15 +17,15 @@ public:
     rgb_[2] = 100;
     SetRGBFromHLS();
   }
-  // LEDClass(const LED& origin){
-  //   
-  // }
-    
+  // LED(const LED& origin){
+  //
+  // };
+
   // return led status
   bool on();
   bool off();
   bool getStatus();
-  
+
   // led の色相を変更する
   // 色相: 0.0-1.0
   void color(uint8_t red, uint8_t green, uint8_t blue);
@@ -49,10 +50,10 @@ public:
 private:
   // led status on = true, off = false
   bool status_;
-  
+
   // led_num_ = {0, 1, }
   int8_t led_num_;
-  
+
   // led color (default = white)
   uint8_t rgb_[3];
   uint8_t hls_[3];
@@ -60,31 +61,3 @@ private:
   void SetHLSFromRGB();
   void SetRGBFromHLS();
 };
-
-// class LED {
-//   public:
-//     byte x, y;
-// 
-//     // LED() { this->isFirst = true; };
-// 
-// 
-//     // led の色相を変更する
-//     // 色相: 0.0-1.0
-//     void color(int8_t led, float hue);
-// 
-// 
-//     void brightness(int8_t led, float brightness);
-// 
-//     // led の彩度を変更する
-//     // 彩度 0.0-1.0
-//     void saturation(int8_t led, float saturation);
-// 
-//     // led の色をランダムに点灯する
-//     void randomcolor(int8_t led);
-// 
-//     // void debug_show();
-// 
-//     LED(const LED &other) {};
-//   private:
-//     byte no;
-// };
