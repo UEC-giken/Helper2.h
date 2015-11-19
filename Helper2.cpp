@@ -84,6 +84,8 @@ void wait(int16_t msec) {
 
   bool is_tapped = false;
   bool is_doubletapped = false;
+  bool is_active = false;
+  bool is_freefall = false;
 
   while ((millis() - start) <= msec) {
     updateData();
