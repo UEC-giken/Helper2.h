@@ -1,7 +1,51 @@
 #include <Arduino.h>
 #include "Accel.h"
 
-int cnt = 0;
+float Accel::x() {
+  return _x[29];
+};
+
+float Accel::y() {
+  return _y[29];
+};
+
+float Accel::z() {
+  return _z[29];
+};
+
+
+bool Accel::active() {
+  return _active;
+};
+
+bool Accel::freefall() {
+  return _freefall;
+};
+
+bool Accel::tap() {
+  return _tap;
+};
+
+bool Accel::doubletap() {
+  return _doubletap;
+};
+
+void Accel::setActive(bool new_active) {
+  _active = new_active;
+};
+
+void Accel::setFreefall(bool new_freefall) {
+  _freefall = new_freefall;
+};
+
+void Accel::setTap(bool new_tap) {
+  _tap = new_tap;
+};
+
+void Accel::setDoubletap(bool new_doubletap) {
+  _doubletap = new_doubletap;
+};
+
 
 void Accel::addValue(float nx, float ny, float nz) {
   for (int i=0; i<29; i++) {
@@ -21,8 +65,22 @@ void Accel::addValue(float nx, float ny, float nz) {
   _diff[29] = abs(new_size - _last_size);
   _last_size = new_size;
 
-  tap = false;
-  doubletap = false;
+  _active = false;
+  _freefall = false;
+  _tap = false;
+  _doubletap = false;
+
+  // 検出をゆるくするため、数フレームほど比較する
+  if (0.1 < abs(_diff[29] - _diff[28]) ||
+      0.1 < abs(_diff[29] - _diff[27]) ||
+      0.1 < abs(_diff[29] - _diff[26]) ||
+      0.1 < abs(_diff[29] - _diff[25])) {
+    _active = true;
+  }
+
+  if (_last_size < 0.2) {
+    _freefall = true;
+  }
 
   /**
   * 設定すべき値は a-e, p-r の8つ
@@ -48,20 +106,20 @@ void Accel::addValue(float nx, float ny, float nz) {
     }
 
     if (100 < t_diff) {
-      tap = true;
+      _tap = true;
 
       if (t_diff < 400) {
-        doubletap = true;
+        _doubletap = true;
       }
 
       _t_lasttap = millis();
     }
 
     if (debug) {
-      if (doubletap) {
+      if (_doubletap) {
         Serial.print("doubletapped, _diff[15] = ");
         Serial.println(_diff[15], 2);
-      } else if (tap) {
+      } else if (_tap) {
         Serial.print("tapped, _diff[15] = ");
         Serial.println(_diff[15], 2);
       } else {
