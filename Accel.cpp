@@ -41,6 +41,12 @@ void Accel::addValue(float nx, float ny, float nz) {
   if (_diff[0] < 0.02 && 0.28 < _diff[15] && _diff[29] < 0.02) {
     long int t_diff = millis() - _t_lasttap;
 
+    if (debug) {
+      Serial.print("time diff: ");
+      Serial.print(t_diff);
+      Serial.print("  ");
+    }
+
     if (100 < t_diff) {
       tap = true;
 
@@ -49,6 +55,18 @@ void Accel::addValue(float nx, float ny, float nz) {
       }
 
       _t_lasttap = millis();
+    }
+
+    if (debug) {
+      if (doubletap) {
+        Serial.print("doubletapped, _diff[15] = ");
+        Serial.println(_diff[15], 2);
+      } else if (tap) {
+        Serial.print("tapped, _diff[15] = ");
+        Serial.println(_diff[15], 2);
+      } else {
+        Serial.println("ignored");
+      }
     }
   }
 }
