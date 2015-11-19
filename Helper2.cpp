@@ -4,6 +4,7 @@
 // #include "dtmtdatas.h"
 
 #include "Helper2_protected.h"
+#include "LED.h"
 
 // val の値を min と max の値に収まるようにする
 // val < min         :=> min
@@ -22,8 +23,15 @@ int clamp(int val, int min, int max) {
 // 加速度センサ
 ADXL345 adxl;
 
+Accel accel;
+
+LEDClass led1 = LEDClass(0);
+LEDClass led2 = LEDClass(1);
+
 void initialize() {
   accel = Accel();
+  AN_LED.begin();
+
 
   // 加速度センサ初期化
   sendi2c(ADXL345_ID, 0x2C, B00001100);//3200Hz書き出し
@@ -38,7 +46,7 @@ void initialize() {
   // debug用
   // Serial.begin(9600);
   // Serial.println("started");
-
+  
   delay(1000);//初期状態確認用
 }
 
@@ -72,7 +80,7 @@ void interrupt() {
 };
 
 // I2C通信
-void sendi2c(byte id, byte reg, byte data) {
+void sendi2c(uint8_t id, uint8_t reg, uint8_t data) {
   Wire.beginTransmission(id); // Adxl345 のアドレス: 0x1D
   Wire.write(reg);
   Wire.write(data);
