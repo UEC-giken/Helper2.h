@@ -6,9 +6,6 @@
 #include "Helper2_protected.h"
 #include "LED.h"
 
-Accel accel;
-
-
 // val の値を min と max の値に収まるようにする
 // val < min         :=> min
 // min <= val <= max :=> val
