@@ -3,8 +3,7 @@
 #include <TimerOne.h> //timer1 //timer0はdelay、timer2はtoneで使われてる(´・ω・｀)
 // #include "dtmtdatas.h"
 
-#include "Helper.h"
-#include "Helper_protected.h"
+#include "Helper2_protected.h"
 
 // val の値を min と max の値に収まるようにする
 // val < min         :=> min
@@ -17,42 +16,14 @@ int clamp(int val, int min, int max) {
   return val;
 }
 
-/****************
- * 基板の向きと,ドトマトの向きと,センサの向きがバラバラなので
- * うまく整合させていきたい
- */
-// ドットマトリクス
-//完成版基板用
-#define COL1A 14
-#define COL2A 2
-#define COL3A 3
-#define COL4A 9
-#define COL5A 5
-#define COL6A 10
-#define COL7A 16
-#define COL8A 17
-#define ROW1K 8
-#define ROW2K 15
-#define ROW3K 7
-#define ROW4K 11
-#define ROW5K 1
-#define ROW6K 6
-#define ROW7K 0
-#define ROW8K 4
-#define BUZZER 12
-
-// ドットマトリクスの配線
-const int rowpin[8] = { ROW1K, ROW2K, ROW3K, ROW4K, ROW5K, ROW6K, ROW7K, ROW8K };
-const int colpin[8] = { COL1A, COL2A, COL3A, COL4A, COL5A, COL6A, COL7A, COL8A };
-
 // I2C
 #define ADXL345_ID 0x1D
-#define APDS9960_ID 0x39
 
 // 加速度センサ
 ADXL345 adxl;
 
 void initialize() {
+  accel = Accel();
 
   // 加速度センサ初期化
   sendi2c(ADXL345_ID, 0x2C, B00001100);//3200Hz書き出し
@@ -90,16 +61,14 @@ void updateData() {
   int8_t y = clamp(-sumy / 610, -8, 8);
   int8_t z = clamp(-sumz / 560, -8, 8);
 
-  Accel &a = Accel::getInstance();
-  // a.x = x;
-  // a.y = y;
-  // a.z = z;
-  a.updateAccel(&x, &y, &z);
+  accel.x = x;
+  accel.y = y;
+  accel.z = z;
 };
 
 // timer1割り込みで走る関数
 void interrupt() {
-  // ここで updateData する?
+  updateData();
 };
 
 // I2C通信

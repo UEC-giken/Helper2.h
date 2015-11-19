@@ -1,14 +1,16 @@
+#include <stdbool.h>
+#include <stdint.h>
+
 #pragma once
 
-#include <stdbool.h>
-#include "Dot.h"
-#include "Image.h"
-#include "DotMatrix.h"
 #include "Accel.h"
 
-// #include <stdint.h>
+// #include "LED.h"
 
-// typedef int8_t byte;
+// extern LED led1;
+// extern LED led2;
+
+extern Accel accel;
 
 void initialize();
 void initializeAccelerometer();

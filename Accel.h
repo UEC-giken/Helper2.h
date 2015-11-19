@@ -1,4 +1,5 @@
-#include "Helper2_protected.h"
+#include <stdbool.h>
+#include <stdint.h>
 
 #pragma once
 

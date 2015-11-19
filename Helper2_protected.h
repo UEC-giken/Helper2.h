@@ -1,7 +1,6 @@
 #pragma once
 
-#include "Helper.h"
+#include "Helper2.h"
 
 void interrupt();
-void sendi2c(byte id, byte reg, byte data);
-
+void sendi2c(int8_t id, int8_t reg, int8_t data);
