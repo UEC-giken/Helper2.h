@@ -27,6 +27,7 @@ public:
   // return led status
   bool on();
   bool off();
+  bool reflection();
   bool getStatus();
 
   // led の色相を変更する
@@ -46,8 +47,6 @@ public:
   void randomcolor();
   
   // DEBUG
-  void RandomColorFromHLS();
-  void RandomColorFromRGB();
   void InfoRGBHLS();
   
 private:

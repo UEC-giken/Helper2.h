@@ -5,12 +5,6 @@
 
 Adafruit_NeoPixel AN_LED = Adafruit_NeoPixel(NUM_OF_LED, NUM_OF_PINS, NEO_RGB + NEO_KHZ800);
 
-// must initialize with begin() and show()
-
-// void Dot::debug_show() {
-//   printf("(%d, %d)\n", this->x, this->y);
-// };
-
 bool LED::on(){
   AN_LED.setPixelColor(led_num_, red_, green_, blue_);
   AN_LED.show();
@@ -28,6 +22,12 @@ bool LED::off(){
   return status_;
 }
 
+bool LED::reflection(){
+  if (status_) {
+  	return on();
+  }
+}
+
 bool LED::getStatus(){
   return status_;
 }
@@ -36,10 +36,7 @@ void LED::color(float hue) {
   hue_ = fmod(hue, 360);
 
   SetRGBFromHLS();
-
-  if (status_) {
-  	on();
-  }
+  reflection();
 }
 
 void LED::color(uint8_t red, uint8_t green, uint8_t blue) {
@@ -48,35 +45,43 @@ void LED::color(uint8_t red, uint8_t green, uint8_t blue) {
   blue_ = blue;
 
   SetHLSFromRGB();
-
-  if (status_) {
-    on();
-  }
+  reflection();
 }
 
 void LED::brightness(float brightness) {
   brightness_ = brightness;
 
   SetRGBFromHLS();
-
-  if (status_) {
-  	on();
-  }
+  reflection();
 }
 //
 void LED::saturation(float saturation) {
 	saturation_ = saturation;
 
 	SetRGBFromHLS();
-
-	if (status_) {
-		on();
-	}
+  reflection();
 }
-//
-// void LED::randomcolor() {
-//
-// }
+
+void LED::randomcolor() {
+  color(static_cast<double>(random(100)/100));
+  reflection();
+}
+
+void LED::InfoRGBHLS(){
+  Serial.print("RGB = ");
+  Serial.print(red_);
+  Serial.print(", ");
+  Serial.print(green_);
+  Serial.print(", ");
+  Serial.println(blue_);
+  
+  Serial.print("HLS = ");
+  Serial.print(hue_);
+  Serial.print(", ");
+  Serial.print(brightness_);
+  Serial.print(", ");
+  Serial.println(saturation_);
+}
 
 void LED::SetHLSFromRGB() {
 	float max = max(max(red_, green_), blue_);
@@ -105,8 +110,8 @@ void LED::SetRGBFromHLS() {
 
   float max, min;
   if (l < 0.5) {
-    max = 255 * l * (s + 1);
-    min = 255 * l * (s - 1);
+    max = 255 * l * (1 + s);
+    min = 255 * l * (1 - s);
   } else {
     max = 255 * (l + (1 - l) * s);
     min = 255 * (l - (1 - l) * s);
