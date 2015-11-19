@@ -72,7 +72,7 @@ void LED::saturation(float saturation) {
 }
 
 void LED::randomcolor() {
-  color(static_cast<double>(random(100)/100));
+  color(random(255), random(255), random(255));
   reflection();
 }
 

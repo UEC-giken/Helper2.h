@@ -21,6 +21,10 @@
 
 + ledを消灯
 
+#### bool flip()
+
++ ledを消灯してたら点灯、点灯してたら消灯
+
 #### void color(uint8_t red, uint8_t green, uint8_t blue)
 
 + rgbで色を設定
