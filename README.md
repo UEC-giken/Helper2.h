@@ -33,7 +33,7 @@
 
 + 加速度センサーがダブルタップされたかどうか
 
-#### void debug_show(int i)
+#### void debug_print(int i)
 
 + 内部で保持する x, y, z 軸の値を Serial でプリントします
 + i: 0 - 29 (29が最新の値)
