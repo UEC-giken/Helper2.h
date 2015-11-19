@@ -9,9 +9,6 @@ public:
   LED(int8_t num):
     led_num_(num),
     status_(false),
-    red_(100),
-    green_(100),
-    blue_(100),
     saturation_(1.0),
     brightness_(0.5),
     hue_(0)
