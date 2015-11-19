@@ -84,6 +84,8 @@ void wait(int16_t msec) {
 
   bool is_tapped = false;
   bool is_doubletapped = false;
+  bool is_active = false;
+  bool is_freefall = false;
 
   while ((millis() - start) <= msec) {
     updateData();
@@ -92,10 +94,16 @@ void wait(int16_t msec) {
       is_tapped = true;
     if (accel.doubletap)
       is_doubletapped = true;
+    if (accel.active)
+      is_active = true;
+    if (accel.freefall)
+      is_freefall = true;
   }
 
   accel.tap = is_tapped;
   accel.doubletap = is_doubletapped;
+  accel.active = is_active;
+  accel.freefall = is_freefall;
 };
 
 // timer1割り込みで走る関数

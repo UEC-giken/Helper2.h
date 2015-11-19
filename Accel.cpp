@@ -21,8 +21,22 @@ void Accel::addValue(float nx, float ny, float nz) {
   _diff[29] = abs(new_size - _last_size);
   _last_size = new_size;
 
+  active = false;
+  freefall = false;
   tap = false;
   doubletap = false;
+
+  // 検出をゆるくするため、数フレームほど比較する
+  if (0.1 < abs(_diff[29] - _diff[28]) ||
+      0.1 < abs(_diff[29] - _diff[27]) ||
+      0.1 < abs(_diff[29] - _diff[26]) ||
+      0.1 < abs(_diff[29] - _diff[25])) {
+    active = true;
+  }
+
+  if (_last_size < 0.2) {
+    freefall = true;
+  }
 
   /**
   * 設定すべき値は a-e, p-r の8つ
