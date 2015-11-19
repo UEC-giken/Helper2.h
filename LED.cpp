@@ -12,59 +12,59 @@ Adafruit_NeoPixel AN_LED = Adafruit_NeoPixel(NUM_OF_LED, NUM_OF_PINS, NEO_RGB + 
 //   printf("(%d, %d)\n", this->x, this->y);
 // };
 
-bool LEDClass::on(){
+bool LED::on(){
   AN_LED.setPixelColor(led_num_, red_, green_, blue_);
   AN_LED.show();
-  
+
   status_ = true;
 
   return status_;
 }
 
-bool LEDClass::off(){
+bool LED::off(){
   AN_LED.setPixelColor(led_num_, 0x000000);
   status_ = false;
 
   return status_;
 }
 
-// bool LEDClass::getStatus(){
+// bool LED::getStatus(){
 //   return status_;
 // }
-// 
-// void LEDClass::color(float hue){
+//
+// void LED::color(float hue){
 //   color(led_num_, hue);
-//   
-//   
+//
+//
 // }
-// 
-// void LEDClass::color(uint8_t r, uint8_t g, uint8_t b){
+//
+// void LED::color(uint8_t r, uint8_t g, uint8_t b){
 //   red_ = r;
 //   green_ = g;
 //   blue_ = b;
-//   
+//
 //   SetHLSFromRGB();
 // }
-// 
+//
 // void brightness(double brightness){
 //   brightness_ = brightness;
-//   
-//   SetRGBFromHLS();  
+//
+//   SetRGBFromHLS();
 // }
-//   
+//
 // void saturation(double saturation){
-//   
+//
 // }
-// 
-// void LEDClass::randomcolor(){
-//   
+//
+// void LED::randomcolor(){
+//
 // }
-//  
-// void LEDClass::SetHLSFromRGB(){
-//   
+//
+// void LED::SetHLSFromRGB(){
+//
 // }
-// 
-// void LEDClass::SetRGBFromHLS(){
+//
+// void LED::SetRGBFromHLS(){
 //   double max, min;
 //   if (brightness_ < 0.5) {
 //     max = 255 * l * (saturation_ + 1);
@@ -73,7 +73,7 @@ bool LEDClass::off(){
 //     max = 255 * (l + (1 - l) * s);
 //     min = 255 * (l - (1 - l) * s);
 //   }
-// 
+//
 //   if (h < 60) {
 //     red_ = max;
 //     green_ = (h / 60) * (max - min) + min;
@@ -100,16 +100,16 @@ bool LEDClass::off(){
 //     blue_ = ((360-h) / 60) * (max - min) + min;
 //   }
 // }
-//   
-// 
-// 
-// 
-// 
+//
+//
+//
+//
+//
 // void color_update_hsl(int led) {
 //   double s = led_saturation[led-1];
 //   double l = led_brightness[led-1];
 //   double h = led_hue[led-1] * 360; // 0 - 360
-// 
+//
 //   double max, min;
 //   if (l < 0.5) {
 //     max = 255 * l * (s + 1);
@@ -118,9 +118,9 @@ bool LEDClass::off(){
 //     max = 255 * (l + (1 - l) * s);
 //     min = 255 * (l - (1 - l) * s);
 //   }
-// 
+//
 //   uint8_t r, g, b;
-// 
+//
 //   if (h < 60) {
 //     r = max;
 //     g = (h / 60) * (max - min) + min;
@@ -146,9 +146,9 @@ bool LEDClass::off(){
 //     g = min;
 //     b = ((360-h) / 60) * (max - min) + min;
 //   }
-// 
+//
 //   uint32_t rgb = Adafruit_NeoPixel::Color(r, g, b);
 //   // Serial.println(rgb, HEX);
 //   led_colors[led-1] = rgb;
-// 
+//
 // }
