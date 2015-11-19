@@ -1,13 +1,12 @@
-#include <stdbool.h>
 #include <stdint.h>
 
 #pragma once
 
 class Accel {
   public:
-    int8_t x;
-    int8_t y;
-    int8_t z;
+    float x;
+    float y;
+    float z;
 
     // ここは getter にしたほうが良い?
     bool active;
@@ -19,6 +18,11 @@ class Accel {
         this->x = 0;
         this->y = 0;
         this->z = 0;
+
+        this->active = false;
+        this->freefall = false;
+        this->tap = false;
+        this->doubletap = false;
     };
   private:
     Accel(const Accel &other) {};

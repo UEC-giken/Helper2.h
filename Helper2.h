@@ -13,12 +13,12 @@ extern Accel accel;
 void initialize();
 void initializeAccelerometer();
 
-void updateData();
+void wait(int16_t msec);
 
 // デバッグ用 (led の現在標示中の色に関する値を返す)
-double color(int led);
-double brightness(int led);
-double saturation(int led);
+// double color(int led);
+// double brightness(int led);
+// double saturation(int led);
 
 // led をレインボーに表示する。
 // speed は 100
@@ -30,5 +30,5 @@ double saturation(int led);
 // void fadein(int led, double period);
 // void fadeout(int led, double period);
 
-void on(int led);
-void off(int led);
+// void on(int led);
+// void off(int led);
