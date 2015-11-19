@@ -80,14 +80,14 @@ void LED::colorcircle(uint8_t span) {
   color(hue_ + span);
 }
 
-void LED::InfoRGBHLS(){
+void LED::debug_print(){
   Serial.print("RGB = ");
   Serial.print(red_);
   Serial.print(", ");
   Serial.print(green_);
   Serial.print(", ");
   Serial.print(blue_);
-  
+
   Serial.print("   HLS = ");
   Serial.print(hue_);
   Serial.print(", ");

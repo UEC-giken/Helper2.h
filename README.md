@@ -34,7 +34,7 @@
 
 + 色相を指定
 + 0-1
-  
+
 #### void brightness(float brightness)
 
 + 明るさを指定
@@ -48,8 +48,8 @@
 #### void randomcolor()
 
 + ランダムな色を表示
-  
-#### void InfoRGBHLS()
+
+#### void debug_print()
 
 + debug用
 + serialにRGBとHLSの値を表示
