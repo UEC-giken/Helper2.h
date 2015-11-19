@@ -9,14 +9,16 @@ class LEDClass {
 public:
   LEDClass(int8_t num):
     led_num_(num),
-    status_(false),
-    red_(255),
-    green_(255),
-    blue_(255)
-  {};
+    status_(false)
+  {
+    rgb_[0] = 100;
+    rgb_[1] = 100;
+    rgb_[2] = 100;
+    // SetRGBFromHLS();
+  }
   // LEDClass(const LED& origin){
   //   
-  // };
+  // }
     
   // return led status
   bool on();
@@ -25,19 +27,19 @@ public:
   
   // led の色相を変更する
   // 色相: 0.0-1.0
-  // void color(double hue);
+  void color(double hue);
   void color(uint8_t red, uint8_t green, uint8_t blue);
   
   // led の明るさを変更する
   // 明るさ: 0.0-1.0
-  // void brightness(double brightness);
+  void brightness(double brightness);
   
   // led の彩度を変更する
   // 彩度 0.0-1.0
-  // void saturation(double saturation);
+  void saturation(double saturation);
   
   // led の色をランダムに点灯する
-  // void randomcolor();
+  void randomcolor();
   
 private:
   // led status on = true, off = false
@@ -47,11 +49,11 @@ private:
   int8_t led_num_;
   
   // led color (default = white)
-  uint8_t red_, green_, blue_;
-  double saturation_, brightness_, hue_;
+  uint8_t rgb_[3];
+  double hsl_[3];
   
-  // void SetHLSFromRGB(uint8_t r, uint8_t g, uint8_t b);
-  // void SetRGBFromHLS(double s, double b, double h);
+  void SetHLSFromRGB();
+  void SetRGBFromHLS();
 };
 
 // class LED {
