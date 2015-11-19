@@ -9,11 +9,14 @@ class LED {
 public:
   LED(int8_t num):
     led_num_(num),
-    status_(false),
-    red_(255),
-    green_(255),
-    blue_(255)
-  {};
+
+    status_(false)
+  {
+    rgb_[0] = 100;
+    rgb_[1] = 100;
+    rgb_[2] = 100;
+    SetRGBFromHLS();
+  }
   // LED(const LED& origin){
   //
   // };
@@ -24,21 +27,26 @@ public:
   bool getStatus();
 
   // led の色相を変更する
-  // 色相: 0.0-1.0
-  // void color(double hue);
+  // 色相: 0-360
   void color(uint8_t red, uint8_t green, uint8_t blue);
-
+  void color(uint8_t hue);
+  
   // led の明るさを変更する
-  // 明るさ: 0.0-1.0
-  // void brightness(double brightness);
-
+  // 明るさ: 0-100
+  void brightness(uint8_t brightness);
+  
   // led の彩度を変更する
-  // 彩度 0.0-1.0
-  // void saturation(double saturation);
-
+  // 彩度 0-100
+  void saturation(uint8_t saturation);
+  
   // led の色をランダムに点灯する
-  // void randomcolor();
-
+  void randomcolor();
+  
+  // DEBUG
+  void RandomColorFromHLS();
+  void RandomColorFromRGB();
+  void InfoRGBHLS();
+  
 private:
   // led status on = true, off = false
   bool status_;
@@ -47,37 +55,9 @@ private:
   int8_t led_num_;
 
   // led color (default = white)
-  uint8_t red_, green_, blue_;
-  double saturation_, brightness_, hue_;
-
-  // void SetHLSFromRGB(uint8_t r, uint8_t g, uint8_t b);
-  // void SetRGBFromHLS(double s, double b, double h);
+  uint8_t rgb_[3];
+  uint8_t hls_[3];
+  
+  void SetHLSFromRGB();
+  void SetRGBFromHLS();
 };
-
-// class LED {
-//   public:
-//     byte x, y;
-//
-//     // LED() { this->isFirst = true; };
-//
-//
-//     // led の色相を変更する
-//     // 色相: 0.0-1.0
-//     void color(int8_t led, double hue);
-//
-//
-//     void brightness(int8_t led, double brightness);
-//
-//     // led の彩度を変更する
-//     // 彩度 0.0-1.0
-//     void saturation(int8_t led, double saturation);
-//
-//     // led の色をランダムに点灯する
-//     void randomcolor(int8_t led);
-//
-//     // void debug_show();
-//
-//     LED(const LED &other) {};
-//   private:
-//     byte no;
-// };
