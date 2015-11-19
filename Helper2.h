@@ -5,8 +5,8 @@
 #include "Accel.h"
 #include "LED.h"
 
-extern LEDClass led1;
-extern LEDClass led2;
+extern LED led1;
+extern LED led2;
 
 extern Accel accel;
 
