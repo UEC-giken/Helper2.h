@@ -72,7 +72,7 @@ void LED::saturation(float saturation) {
 }
 
 void LED::randomcolor() {
-  color(random(255), random(255), random(255));
+  color(static_cast<float>(random(100)) / 100);
   reflection();
 }
 
@@ -80,8 +80,12 @@ void LED::colorcircle(uint8_t span) {
   color(hue_ + span);
 }
 
-void LED::debug_print(){
-  Serial.print("RGB = ");
+void LED::InfoRGBHLS(){
+  Serial.print("led");
+  Serial.print(led_num_);
+  
+  Serial.print("   RGB = ");
+
   Serial.print(red_);
   Serial.print(", ");
   Serial.print(green_);
