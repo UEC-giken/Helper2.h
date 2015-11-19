@@ -1,4 +1,3 @@
-// #include "Helper2_protected.h"
 #include "Adafruit_NeoPixel.h"
 
 #pragma once
@@ -27,6 +26,7 @@ public:
   // return led status
   bool on();
   bool off();
+  bool flip();
   // bool getStatus();
 
   // led の色相を変更する

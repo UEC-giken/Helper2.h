@@ -22,6 +22,15 @@ bool LED::off(){
   return status_;
 }
 
+bool LED::flip(){
+  if (status_){
+    return off();
+  }
+  else {
+    return on();
+  }
+}
+
 bool LED::reflection(){
   if (status_) {
   	return on();
