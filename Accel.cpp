@@ -22,6 +22,7 @@ void Accel::addValue(float nx, float ny, float nz) {
   _last_size = new_size;
 
   active = false;
+  freefall = false;
   tap = false;
   doubletap = false;
 
@@ -31,6 +32,10 @@ void Accel::addValue(float nx, float ny, float nz) {
       0.1 < abs(_diff[29] - _diff[26]) ||
       0.1 < abs(_diff[29] - _diff[25])) {
     active = true;
+  }
+
+  if (_last_size < 0.2) {
+    freefall = true;
   }
 
   /**
