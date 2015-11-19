@@ -13,7 +13,7 @@ Adafruit_NeoPixel AN_LED = Adafruit_NeoPixel(NUM_OF_LED, NUM_OF_PINS, NEO_RGB + 
 // };
 
 bool LED::on(){
-  AN_LED.setPixelColor(led_num_, red_, green_, blue_);
+  AN_LED.setPixelColor(led_num_, rgb_[0], rgb_[1], rgb_[2]);
   AN_LED.show();
 
   status_ = true;
@@ -23,6 +23,7 @@ bool LED::on(){
 
 bool LED::off(){
   AN_LED.setPixelColor(led_num_, 0x000000);
+  AN_LED.show();
   status_ = false;
 
   return status_;
@@ -44,7 +45,7 @@ void LED::color(uint8_t red, uint8_t green, uint8_t blue){
   }
 }
 
-void LED::color(float hue){
+void LED::color(uint8_t hue){
   hls_[0] = hue;
   
   SetRGBFromHLS();
@@ -54,7 +55,7 @@ void LED::color(float hue){
   }
 }
 
-void LED::brightness(float brightness){
+void LED::brightness(uint8_t brightness){
   hls_[1] = brightness;
   
   SetRGBFromHLS();
@@ -64,7 +65,7 @@ void LED::brightness(float brightness){
   }
 }
   
-void LED::saturation(float saturation){
+void LED::saturation(uint8_t saturation){
   hls_[2] = saturation;
   
   SetRGBFromHLS();
@@ -120,12 +121,12 @@ void LED::SetHLSFromRGB(){
     }
   }
 
-  hls_[2] = (max + min) / 2;
-  if (hls_[2] < 128){
-    hls_[1] = (max - min) / (max + min);
+  hls_[1] = 100 * (max + min) / 2 / 255;
+  if (hls_[2] < 50){
+    hls_[2] = 100 * (max - min) / (max + min);
   }  
   else {
-    hls_[1] = (max - min) / (510 - max - min);    
+    hls_[2] = 100 * (max - min) / (510 - max - min);    
   }
 }
 
@@ -134,7 +135,8 @@ void LED::SetRGBFromHLS(){
   if (hls_[1] < 50) {
     max = 2.55 * (hls_[1] + hls_[1] * hls_[2] / 100);
     min = 2.55 * (hls_[1] - hls_[1] * hls_[2] / 100);
-  } else {
+  }
+  else {
     max = 2.55 * (hls_[1] + (100 - hls_[1]) * hls_[2] / 100);
     min = 2.55 * (hls_[1] - (100 - hls_[1]) * hls_[2] / 100);
   }

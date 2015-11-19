@@ -27,17 +27,17 @@ public:
   bool getStatus();
 
   // led の色相を変更する
-  // 色相: 0.0-1.0
+  // 色相: 0-360
   void color(uint8_t red, uint8_t green, uint8_t blue);
-  void color(float hue);
+  void color(uint8_t hue);
   
   // led の明るさを変更する
-  // 明るさ: 0.0-1.0
-  void brightness(float brightness);
+  // 明るさ: 0-100
+  void brightness(uint8_t brightness);
   
   // led の彩度を変更する
-  // 彩度 0.0-1.0
-  void saturation(float saturation);
+  // 彩度 0-100
+  void saturation(uint8_t saturation);
   
   // led の色をランダムに点灯する
   void randomcolor();
