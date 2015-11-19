@@ -4,6 +4,7 @@
 // #include "dtmtdatas.h"
 
 #include "Helper.h"
+#include "Helper_protected.h"
 
 // val の値を min と max の値に収まるようにする
 // val < min         :=> min
@@ -52,29 +53,15 @@ const int colpin[8] = { COL1A, COL2A, COL3A, COL4A, COL5A, COL6A, COL7A, COL8A }
 ADXL345 adxl;
 
 void initialize() {
-  // printf("init\n");
 
   // 加速度センサ初期化
   sendi2c(ADXL345_ID, 0x2C, B00001100);//3200Hz書き出し
   sendi2c(ADXL345_ID, 0x31, B00001000);//fullresmode
   initializeAccelerometer();
 
-  // ピンの出力設定
-  for(int i=0; i<18; i++) {//digital 0-13,analog 0-3
-    pinMode(i, OUTPUT);
-  }
-
-  // 出力の初期値すべて消灯
-  for(int i=0; i<8; i++) {
-    digitalWrite(rowpin[i], LOW);
-    digitalWrite(colpin[i], HIGH);
-  }
-
   // タイマー1
   //割り込み周期[usec]//887@16MH動作//8Mhz動作なら単純に考えて倍
   Timer1.initialize(6000);
-  // showdtmt の処理にかかる時間以上(約890us)を設定しよう
-  // すごいおそい
   Timer1.attachInterrupt(interrupt); //割り込みする関数
 
   // debug用
@@ -112,7 +99,7 @@ void updateData() {
 
 // timer1割り込みで走る関数
 void interrupt() {
-  DotMatrix::show();
+  // ここで updateData する?
 };
 
 // I2C通信

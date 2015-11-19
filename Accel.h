@@ -1,18 +1,24 @@
+#include "Helper2_protected.h"
+
 #pragma once
 
 class Accel {
   public:
-    static int8_t x();
-    static int8_t y();
-    static int8_t z();
+    int8_t x;
+    int8_t y;
+    int8_t z;
 
-    static void updateAccel(int8_t *x, int8_t *y, int8_t *z);
+    // ここは getter にしたほうが良い?
+    bool active;
+    bool freefall;
+    bool tap;
+    bool doubletap;
 
-    static Accel &getInstance();
-
+    Accel() {
+        this->x = 0;
+        this->y = 0;
+        this->z = 0;
+    };
   private:
-    int8_t _x, _y, _z;
-
-    Accel() {};
     Accel(const Accel &other) {};
 };
