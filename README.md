@@ -8,6 +8,36 @@
 
 ## Class
 
+### Accel
+
+加速度センサーの値を保持するクラス
+インスタンスをグローバルで作成済み(accel)
+
+#### float x, y, z
+
++ 加速度センサーの x, y, z 軸の値 (0.0 - 1.0)
+
+#### bool active;
+
++ 加速度センサーが動いているかどうか
+
+#### bool freefall;
+
++ 加速度センサーが自由落下しているかどうか
+
+#### bool tap;
+
++ 加速度センサーがタップされたかどうか (コツンと叩く)
+
+#### bool doubletap;
+
++ 加速度センサーがダブルタップされたかどうか
+
+#### void debug_show(int i)
+
++ 内部で保持する x, y, z 軸の値を Serial でプリントします
++ i: 0 - 29 (29が最新の値)
+
 ### LED
 
 インスタンスをグローバルで作成済み(led1, led2)
@@ -34,7 +64,7 @@
 
 + 色相を指定
 + 0-1
-  
+
 #### void brightness(float brightness)
 
 + 明るさを指定
@@ -48,8 +78,8 @@
 #### void randomcolor()
 
 + ランダムな色を表示
-  
-#### void InfoRGBHLS()
+
+#### void debug_print()
 
 + debug用
 + serialにRGBとHLSの値を表示
