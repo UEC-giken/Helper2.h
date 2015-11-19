@@ -26,8 +26,8 @@ ADXL345 adxl;
 
 Accel accel;
 
-LED led1 = LED(0);
-LED led2 = LED(1);
+LED led1(0);
+LED led2(1);
 
 void initialize() {
   accel = Accel();
