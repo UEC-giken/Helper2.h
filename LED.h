@@ -9,9 +9,9 @@ public:
   LED(int8_t num):
     led_num_(num),
     status_(false),
-    saturation_(0.0),
+    saturation_(0.7),
     brightness_(0.3),
-    hue_(0.3)
+    hue_(0.0)
   {
     SetRGBFromHLS();
   }

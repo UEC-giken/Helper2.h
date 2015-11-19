@@ -11,12 +11,10 @@ void setup(){
 }
   
 void loop(){
-  led1.brightness(0.4);
   led1.colorcircle();
   led1.debug_print();
-  led2.brightness(0.4);
   led2.colorcircle();
-  led2.InfoRGBHLS();
+  led2.debug_print();
 
   if (accel.tap){
     led1.randomcolor();
