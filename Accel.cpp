@@ -129,7 +129,7 @@ void Accel::addValue(float nx, float ny, float nz) {
   }
 }
 
-void Accel::debug_show(int i) {
+void Accel::debug_print(int i) {
   Serial.print("(");
   Serial.print(_x[i], 2);
   Serial.print(", ");
