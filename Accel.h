@@ -30,8 +30,10 @@ class Accel {
     // 値を追加するときはこれを呼ぶこと
     void addValue(float nx, float ny, float nz);
 
-    void debug_show(int i);
+    void debug_print(int i);
   private:
+    const float 
+      
     float _x[30];
     float _y[30];
     float _z[30];

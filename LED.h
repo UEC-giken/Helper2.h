@@ -16,10 +16,6 @@ public:
     SetRGBFromHLS();
   }
 
-  // LED(const LED& origin){
-  //
-  // };
-
   // return led status
   bool on();
   bool off();
@@ -56,6 +52,8 @@ private:
   // led color (default = white)
   uint8_t red_, green_, blue_;
   float saturation_, brightness_, hue_;
+
+  LED(const LED& origin){}
 
   bool reflection();
   void SetHLSFromRGB();
