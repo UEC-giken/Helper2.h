@@ -76,15 +76,19 @@ void LED::randomcolor() {
   reflection();
 }
 
+void LED::colorcircle(uint8_t span) {
+  color(hue_ + span);
+}
+
 void LED::InfoRGBHLS(){
   Serial.print("RGB = ");
   Serial.print(red_);
   Serial.print(", ");
   Serial.print(green_);
   Serial.print(", ");
-  Serial.println(blue_);
+  Serial.print(blue_);
   
-  Serial.print("HLS = ");
+  Serial.print("   HLS = ");
   Serial.print(hue_);
   Serial.print(", ");
   Serial.print(brightness_);
@@ -106,7 +110,6 @@ void LED::SetHLSFromRGB() {
 	else if (blue_== max)
 		h = 60 * ((red_- green_) / (max - min)) + 240;
 
-
 	hue_ = fmod(h, 360) / 360;
 	saturation_ = (max - min) / max;
 	brightness_ = max / 255.0;
@@ -115,7 +118,7 @@ void LED::SetHLSFromRGB() {
 void LED::SetRGBFromHLS() {
   float s = saturation_;
   float l = brightness_;
-  float h = hue_ * 360; // 0 - 360
+  float h = hue_; // 0 - 360
 
   float max, min;
   if (l < 0.5) {

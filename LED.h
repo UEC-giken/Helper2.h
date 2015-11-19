@@ -44,6 +44,7 @@ public:
 
   // led の色をランダムに点灯する
   void randomcolor();
+  void colorcircle(uint8_t span = 2);
   
   // DEBUG
   void InfoRGBHLS();
