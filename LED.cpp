@@ -7,13 +7,12 @@ Adafruit_NeoPixel AN_LED = Adafruit_NeoPixel(NUM_OF_LED, NUM_OF_PINS, NEO_RGB + 
 
 // must initialize with begin() and show()
 
-
 // void Dot::debug_show() {
 //   printf("(%d, %d)\n", this->x, this->y);
 // };
 
 bool LED::on(){
-  AN_LED.setPixelColor(led_num_, rgb_[0], rgb_[1], rgb_[2]);
+  AN_LED.setPixelColor(led_num_, red_, green_, blue_);
   AN_LED.show();
 
   status_ = true;
@@ -33,137 +32,109 @@ bool LED::getStatus(){
   return status_;
 }
 
-void LED::color(uint8_t red, uint8_t green, uint8_t blue){
-  rgb_[0] = red;
-  rgb_[1] = green;
-  rgb_[2] = blue;
-  
+void LED::color(float hue) {
+  hue_ = fmod(hue, 360);
+
+  SetRGBFromHLS();
+
+  if (status_) {
+  	on();
+  }
+}
+
+void LED::color(uint8_t red, uint8_t green, uint8_t blue) {
+  red_ = red;
+  green_ = green;
+  blue_ = blue;
+
   SetHLSFromRGB();
-  
-  if (status_){
+
+  if (status_) {
     on();
   }
 }
 
-void LED::color(uint8_t hue){
-  hls_[0] = hue;
-  
-  SetRGBFromHLS();
-  
-  if (status_){
-    on();
-  }
-}
+void LED::brightness(float brightness) {
+  brightness_ = brightness;
 
-void LED::brightness(uint8_t brightness){
-  hls_[1] = brightness;
-  
   SetRGBFromHLS();
-  
-  if (status_){
-    on();
-  }
-}
-  
-void LED::saturation(uint8_t saturation){
-  hls_[2] = saturation;
-  
-  SetRGBFromHLS();
-  
-  if (status_){
-    on();
-  }
-}
 
-// void LED::randomcolor(){
-//   
+  if (status_) {
+  	on();
+  }
+}
+//
+void LED::saturation(float saturation) {
+	saturation_ = saturation;
+
+	SetRGBFromHLS();
+
+	if (status_) {
+		on();
+	}
+}
+//
+// void LED::randomcolor() {
+//
 // }
-//  
 
-void LED::InfoRGBHLS(){
-  for (int8_t i = 0; i < 3; i++){
-    Serial.print("rgb_[");
-    Serial.print(i);
-    Serial.print("] : ");
-    Serial.println(rgb_[i]);  
-  } 
-  for (int8_t i = 0; i < 3; i++){
-    Serial.print("hls_[");
-    Serial.print(i);
-    Serial.print("] : ");
-    Serial.println(hls_[i]);  
-  }
+void LED::SetHLSFromRGB() {
+	float max = max(max(red_, green_), blue_);
+	float min = min(min(red_, green_), blue_);
+
+	float h;
+	if (min == max)
+		h = 0;
+	else if (red_== max)
+		h = 60 * ((green_- blue_) / (max - min));
+	else if (green_== max)
+		h = 60 * ((blue_- red_) / (max - min)) + 120;
+	else if (blue_== max)
+		h = 60 * ((red_- green_) / (max - min)) + 240;
+
+
+	hue_ = fmod(h, 360) / 360;
+	saturation_ = (max - min) / max;
+	brightness_ = max / 255.0;
 }
 
-void LED::SetHLSFromRGB(){
-  int8_t min = 255, max = 0;
-  for (int8_t i = 0; i < 3; i++){
-    if (rgb_[i] < min){
-      min = rgb_[i];
-    }
-    if (rgb_[i] > max){
-      max = rgb_[i];
-    }
-  }
-  
-  if (max == min){
-    hls_[0] = 0;
-    hls_[2] = 0;
-  }
-  else {
-    for (int8_t i = 0; i < 3; i++){
-      if (max == rgb_[i]){
-        hls_[0] = 60 * (rgb_[(i+1)%3] - rgb_[(i+2)%3]) / (max - min) + 120 * i;
-      }
-    }
-    while (hls_[0] < 0){
-      hls_[0] += 360;
-    }
-  }
+void LED::SetRGBFromHLS() {
+  float s = saturation_;
+  float l = brightness_;
+  float h = hue_ * 360; // 0 - 360
 
-  hls_[1] = 100 * (max + min) / 2 / 255;
-  if (hls_[2] < 50){
-    hls_[2] = 100 * (max - min) / (max + min);
-  }  
-  else {
-    hls_[2] = 100 * (max - min) / (510 - max - min);    
-  }
-}
-
-void LED::SetRGBFromHLS(){
-  uint8_t max, min;
-  if (hls_[1] < 50) {
-    max = 2.55 * (hls_[1] + hls_[1] * hls_[2] / 100);
-    min = 2.55 * (hls_[1] - hls_[1] * hls_[2] / 100);
-  }
-  else {
-    max = 2.55 * (hls_[1] + (100 - hls_[1]) * hls_[2] / 100);
-    min = 2.55 * (hls_[1] - (100 - hls_[1]) * hls_[2] / 100);
-  }
-
-  if (hls_[0] < 60) {
-    rgb_[0] = max;
-    rgb_[1] = (hls_[0] / 60) * (max - min) + min;
-    rgb_[2] = min;
-  } else if (hls_[0] < 120) {
-    rgb_[0] = ((120 - hls_[0]) / 60) * (max - min) + min;
-    rgb_[1] = max;
-    rgb_[2] = min;
-  } else if (hls_[0] < 180) {
-    rgb_[0] = min;
-    rgb_[1] = max;
-    rgb_[2] = ((hls_[0] - 120) / 60) * (max - min) + min;
-  } else if (hls_[0] < 240) {
-    rgb_[0] = min;
-    rgb_[1] = ((240 - hls_[0]) / 60) * (max - min) + min;
-    rgb_[2] = max;
-  } else if (hls_[0] < 300) {
-    rgb_[0] = ((hls_[0] - 240) / 60) * (max - min) + min;
-    rgb_[1] = min;
-    rgb_[2] = max;
+  float max, min;
+  if (l < 0.5) {
+    max = 255 * l * (s + 1);
+    min = 255 * l * (s - 1);
   } else {
-    rgb_[0] = max;
-    rgb_[1] = min;
-    rgb_[2] = ((360 - hls_[0]) / 60) * (max - min) + min;
+    max = 255 * (l + (1 - l) * s);
+    min = 255 * (l - (1 - l) * s);
+  }
+
+  if (h < 60) {
+    red_= max;
+    green_= (h / 60) * (max - min) + min;
+    blue_= min;
+  } else if (h < 120) {
+    red_= ((120 - h) / 60) * (max - min) + min;
+    green_= max;
+    blue_= min;
+  } else if (h < 180) {
+    red_= min;
+    green_= max;
+    blue_= ((h - 120) / 60) * (max - min) + min;
+  } else if (h < 240) {
+    red_= min;
+    green_= ((240 - h) / 60) * (max - min) + min;
+    blue_= max;
+  } else if (h < 300) {
+    red_= ((h - 240) / 60) * (max - min) + min;
+    green_= min;
+    blue_= max;
+  } else {
+    red_= max;
+    green_= min;
+    blue_= ((360-h) / 60) * (max - min) + min;
   }
 }
