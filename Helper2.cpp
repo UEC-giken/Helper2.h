@@ -75,18 +75,27 @@ void updateData() {
   float y = clamp(-sumy / 4900.0, -1.0, 1.0);
   float z = clamp(-sumz / 4500.0, -1.0, 1.0);
 
-  accel.x = x;
-  accel.y = y;
-  accel.z = z;
+  accel.addValue(x, y, z);
 };
 
 // loop() の中で呼ばれる
 void wait(int16_t msec) {
   uint32_t start = millis();
 
-  while ((millis() - start) < msec) {
+  bool is_tapped = false;
+  bool is_doubletapped = false;
+
+  while ((millis() - start) <= msec) {
     updateData();
+
+    if (accel.tap)
+      is_tapped = true;
+    if (accel.doubletap)
+      is_doubletapped = true;
   }
+
+  accel.tap = is_tapped;
+  accel.doubletap = is_doubletapped;
 };
 
 // timer1割り込みで走る関数
