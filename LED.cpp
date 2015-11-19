@@ -85,12 +85,13 @@ void LED::InfoRGBHLS(){
   Serial.print(led_num_);
   
   Serial.print("   RGB = ");
+
   Serial.print(red_);
   Serial.print(", ");
   Serial.print(green_);
   Serial.print(", ");
   Serial.print(blue_);
-  
+
   Serial.print("   HLS = ");
   Serial.print(hue_);
   Serial.print(", ");

@@ -30,7 +30,7 @@ public:
   // 色相: 0.0-1.0
   void color(uint8_t red, uint8_t green, uint8_t blue);
   void color(float hue);
-  
+
   // led の明るさを変更する
   // 明るさ: 0.0-1.0
   void brightness(float brightness);
@@ -42,10 +42,10 @@ public:
   // led の色をランダムに点灯する
   void randomcolor();
   void colorcircle(uint8_t span = 2);
-  
-  // DEBUG
-  void InfoRGBHLS();
-  
+
+  // RGB と HLS の色情報をプリントする
+  void debug_print();
+
 private:
   // led status on = true, off = false
   bool status_;
@@ -56,7 +56,7 @@ private:
   // led color (default = white)
   uint8_t red_, green_, blue_;
   float saturation_, brightness_, hue_;
-  
+
   bool reflection();
   void SetHLSFromRGB();
   void SetRGBFromHLS();

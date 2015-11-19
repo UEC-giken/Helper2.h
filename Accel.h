@@ -14,7 +14,9 @@ class Accel {
     bool tap;
     bool doubletap;
 
-    Accel() : x(0), y(0), z(0), _last_size(0), _t_lasttap(0),
+    bool debug;
+
+    Accel() : x(0), y(0), z(0), _last_size(0), _t_lasttap(0), debug(false),
               active(false), freefall(false), tap(false), doubletap(false) {
         for (int i=0; i<30; i++) {
             _x[i] = 0;
@@ -34,10 +36,11 @@ class Accel {
     float _y[30];
     float _z[30];
     float _diff[30]; // 累積誤差
-    int _millis[30]; // デバッグ用
     float _last_size; // 前フレームの 過速度の大きさの二乗
 
     float _t_lasttap;
+
+    int _millis[30]; // デバッグ用
 
     Accel(const Accel &other) {};
 };
