@@ -14,16 +14,30 @@ class Accel {
     bool tap;
     bool doubletap;
 
-    Accel() {
-        this->x = 0;
-        this->y = 0;
-        this->z = 0;
-
-        this->active = false;
-        this->freefall = false;
-        this->tap = false;
-        this->doubletap = false;
+    Accel() : x(0), y(0), z(0), _last_size(0), _t_lasttap(0),
+              active(false), freefall(false), tap(false), doubletap(false) {
+        for (int i=0; i<30; i++) {
+            _x[i] = 0;
+            _y[i] = 0;
+            _z[i] = 0;
+            _diff[i] = 0;
+            _millis[i] = 0;
+        }
     };
+
+    // 値を追加するときはこれを呼ぶこと
+    void addValue(float nx, float ny, float nz);
+
+    void debug_show(int i);
   private:
+    float _x[30];
+    float _y[30];
+    float _z[30];
+    float _diff[30]; // 累積誤差
+    int _millis[30]; // デバッグ用
+    float _last_size; // 前フレームの 過速度の大きさの二乗
+
+    float _t_lasttap;
+
     Accel(const Accel &other) {};
 };
