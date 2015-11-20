@@ -3,6 +3,9 @@
 #include <TimerOne.h>
 
 void setup() {
+	Serial.begin(9600);
+	accel.debug = true;
+
 	initialize();
 
 	led1.on();

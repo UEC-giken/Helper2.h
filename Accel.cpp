@@ -14,15 +14,15 @@ float clamp(float val, float min, float max) {
 }
 
 float Accel::x() {
-  return _x[29];
+  return _x[n_frames-1];
 };
 
 float Accel::y() {
-  return _y[29];
+  return _y[n_frames-1];
 };
 
 float Accel::z() {
-  return _z[29];
+  return _z[n_frames-1];
 };
 
 
@@ -60,7 +60,7 @@ void Accel::setDoubletap(bool new_doubletap) {
 
 
 void Accel::addValue(float nx, float ny, float nz) {
-  for (int i=0; i<29; i++) {
+  for (int i=0; i<n_frames-1; i++) {
       _x[i] = _x[i+1];
       _y[i] = _y[i+1];
       _z[i] = _z[i+1];
@@ -68,13 +68,13 @@ void Accel::addValue(float nx, float ny, float nz) {
       _millis[i] = _millis[i+1];
   }
 
-  _x[29] = nx;
-  _y[29] = ny;
-  _z[29] = nz;
-  _millis[29] = millis();
+  _x[n_frames-1] = nx;
+  _y[n_frames-1] = ny;
+  _z[n_frames-1] = nz;
+  _millis[n_frames-1] = millis();
 
   float new_size = nx*nx + ny*ny + nz*nz;
-  _diff[29] = abs(new_size - _last_size);
+  _diff[n_frames-1] = abs(new_size - _last_size);
   _last_size = new_size;
 
   _active = false;
@@ -83,10 +83,10 @@ void Accel::addValue(float nx, float ny, float nz) {
   _doubletap = false;
 
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[29] - _diff[28]) ||
-      0.1 < abs(_diff[29] - _diff[27]) ||
-      0.1 < abs(_diff[29] - _diff[26]) ||
-      0.1 < abs(_diff[29] - _diff[25])) {
+  if (0.1 < abs(_diff[n_frames-1] - _diff[28]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[27]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[26]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[25])) {
     _active = true;
   }
 
@@ -95,20 +95,32 @@ void Accel::addValue(float nx, float ny, float nz) {
   }
 
   /**
-  * 設定すべき値は a-e, p-r の8つ
+  * 設定すべき値は 以下の8つです ([]内は単位)
   *
-  * 前提として、加速度 (x, y, z) をそれぞれ30フレーム(回分)保持する
+  * - ThFrameA [frame]
+  * - ThFrameB [frame]
   *
-  * 加速度の大きさ^2 = x^2 + y^2 + z^2 とする。
-  * 変化量 = 現在のフレームの(加速度の大きさ^2) - 直前フレームの(加速度の大きさ^2) とする。
-  * a フレーム前の変化量が p 未満​ かつ ​b フレーム前の変化量が q 以上​ かつ ​最新フレームの変化量が r 未満​ でタップ検知とする
+  * - ThMaxAtFrameA [(m/s^2)^2]
+  * - ThMinAtFrameB [(m/s^2)^2]
+  * - ThMaxAtLatastFrame [(m/s^2)^2]
   *
-  * ダブルタップ検知については
-  * d フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
-  * d フレーム以上離れたタップを ダブルタップとする
-  * e フレーム以上離れたタップは異なるタップとする  (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace [ms]
+  * - ThMaximumDoubleTapSpace [ms]
+  *
+  * 前提として、加速度 (x, y, z) をそれぞれn_frames回(フレーム)分保持する
+  *
+  * 変化量 = |現在のフレームの加速度|^2 - |直前フレームの加速度|^2 とする。
+  * タップ検知: 以下の3条件を満たした時にタップ検知とする
+  * - (ThFrameA フレーム前の変化量) < ThMaxAtFrameA
+  * - ThMinAtFrameB < (ThFrameB フレーム前の変化量)
+  * - (最新フレームの変化量) < ThMaxAtLatastFrame
+  *
+  * ダブルタップ検知:
+  * - ThMaximumSingleTapSpace フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace フレーム以上離れたタップを ダブルタップとする
+  * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
-  if (_diff[0] < _TH_A && _TH_B < _diff[15] && _diff[29] < _TH_C) {
+  if (_diff[0] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[15] && _diff[n_frames-1] < _ThMaxAtLatastFrame) {
     long int t_diff = millis() - _t_lasttap;
 
     if (debug) {
@@ -117,10 +129,10 @@ void Accel::addValue(float nx, float ny, float nz) {
       Serial.print("  ");
     }
 
-    if (_TH_D < t_diff) {
+    if (_ThMaximumSingleTapSpace < t_diff) {
       _tap = true;
 
-      if (t_diff < _TH_E) {
+      if (t_diff < _ThMaximumDoubleTapSpace) {
         _doubletap = true;
       }
 
