@@ -41,8 +41,8 @@ class Accel {
       }
     }
 
-    void updateData();
     void init();
+    void updateData();
 
     void debug_print(int i);
 
@@ -80,6 +80,4 @@ class Accel {
     {}
 
     void sendi2c(int8_t id, int8_t reg, int8_t data);
-    void initializeAccelerometer();
-
 };
