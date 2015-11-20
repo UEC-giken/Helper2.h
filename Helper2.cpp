@@ -42,6 +42,7 @@ void wait(int16_t msec) {
   while ((millis() - start) <= msec) {
     accel.updateAccel();
     accel.updateFlags();
+  }
 };
 
 // timer1割り込みで走る関数
