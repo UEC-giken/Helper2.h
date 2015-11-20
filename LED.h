@@ -47,13 +47,15 @@ private:
   bool status_;
 
   // led_num_ = {0, 1, }
-  int8_t led_num_;
+  const uint8_t led_num_;
 
   // led color (default = white)
   uint8_t red_, green_, blue_;
   float saturation_, brightness_, hue_;
 
-  LED(const LED& origin){}
+  LED(const LED& origin) : 
+    led_num_(origin.led_num_)
+  {}
 
   bool reflection();
   void SetHLSFromRGB();
