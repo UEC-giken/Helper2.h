@@ -41,10 +41,11 @@ void wait(int16_t msec) {
   // bool is_doubletapped = false;
   // bool is_active = false;
   // bool is_freefall = false;
-  accel.resetFlag();
+  accel.resetFlags();
 
   while ((millis() - start) <= msec) {
     accel.updateAccel();
+    accel.updateFlags();
 
   //   if (accel.tap())
   //     is_tapped = true;

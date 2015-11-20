@@ -19,7 +19,8 @@ class Accel {
     bool tap();
     bool doubletap();
 
-    void resetFlag();
+    void resetFlags();
+    void updateFlags();
 
     bool debug;
 
@@ -78,6 +79,10 @@ class Accel {
       _ThMaximumSingleTapSpace(other._ThMaximumSingleTapSpace),
       _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace)
     {}
+
+    // 新しい加速度の値を追加し、最も古い加速度の値を削除します。
+    void shiftValue(float nx, float ny, float nz);
+
 
     void sendi2c(int8_t id, int8_t reg, int8_t data);
 };

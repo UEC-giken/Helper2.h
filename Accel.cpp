@@ -42,14 +42,14 @@ bool Accel::doubletap() {
   return _doubletap;
 };
 
-void Accel::resetFlag() {
+void Accel::resetFlags() {
   _active = false;
   _freefall = false;
   _tap = false;
   _doubletap = false;
 }
 
-void Accel::addValue(float nx, float ny, float nz) {
+void Accel::shiftValue(float nx, float ny, float nz) {
   for (int i=0; i<n_frames-1; i++) {
       _x[i] = _x[i+1];
       _y[i] = _y[i+1];
@@ -66,7 +66,9 @@ void Accel::addValue(float nx, float ny, float nz) {
   float new_size = nx*nx + ny*ny + nz*nz;
   _diff[n_frames-1] = abs(new_size - _last_size);
   _last_size = new_size;
+}
 
+void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
   if (0.1 < abs(_diff[n_frames-1] - _diff[28]) ||
       0.1 < abs(_diff[n_frames-1] - _diff[27]) ||
@@ -228,5 +230,5 @@ void Accel::updateAccel() {
   float y = clamp(sumy / divider_y, -1.0, 1.0);
   float z = clamp(sumz / divider_z, -1.0, 1.0);
 
-  addValue(x, y, z);
+  shiftValue(x, y, z);
 }
