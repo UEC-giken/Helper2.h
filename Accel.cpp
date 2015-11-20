@@ -42,11 +42,77 @@ bool Accel::doubletap() {
   return _doubletap;
 };
 
-void Accel::resetFlags() {
-  _active = false;
-  _freefall = false;
-  _tap = false;
-  _doubletap = false;
+void Accel::init() {
+  // 加速度センサ の 初期化
+  sendi2c(ADXL345_ID, 0x2C, 0b00001100); // 3200Hz 書き出し
+  sendi2c(ADXL345_ID, 0x31, 0b00001000); // full resolution mode
+
+  adxl.powerOn();
+
+  adxl.setRangeSetting(2); // 測定範囲 (何G まで測定するか)
+
+  // 動作したかを監視する軸の設定 (1 == on; 0 == off)
+  //各軸の判定の論理和
+  adxl.setActivityX(0);
+  adxl.setActivityY(0);
+  adxl.setActivityZ(0);
+
+  // 動作してないを監視する軸の設定 (1 == on; 0 == off)
+  // 各軸の判定の論理積
+  adxl.setInactivityX(0);
+  adxl.setInactivityY(0);
+  adxl.setInactivityZ(0);
+
+  // タップされたことを検視する軸の設定 (1 == on; 0 == off)
+  adxl.setTapDetectionOnX(0);
+  adxl.setTapDetectionOnY(0);
+  adxl.setTapDetectionOnZ(0);
+
+  // setting all interupts to take place on int pin 1
+  // I had issues with int pin 2, was unable to reset it
+  adxl.setInterruptMapping(ADXL345_INT_SINGLE_TAP_BIT, ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_DOUBLE_TAP_BIT, ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_FREE_FALL_BIT,  ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_ACTIVITY_BIT,   ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_INACTIVITY_BIT, ADXL345_INT1_PIN);
+
+  // register interupt actions - 1 == on; 0 == off
+  adxl.setInterrupt(ADXL345_INT_SINGLE_TAP_BIT, 0);
+  adxl.setInterrupt(ADXL345_INT_DOUBLE_TAP_BIT, 0);
+  adxl.setInterrupt(ADXL345_INT_FREE_FALL_BIT,  0);
+  adxl.setInterrupt(ADXL345_INT_ACTIVITY_BIT,   0);
+  adxl.setInterrupt(ADXL345_INT_INACTIVITY_BIT, 0);
+}
+
+void Accel::updateAccel() {
+  // count が大きくなるほどノイズに強くなる (が遅くなる)
+  int count = 20, sumx = 0, sumy = 0, sumz = 0;
+  int rawx = 0, rawy = 0, rawz = 0;
+  // 水準器
+  for(int i=0; i<count; i++) {
+    adxl.readAccel(&rawx, &rawy, &rawz);
+    sumx += rawx;
+    sumy += rawy;
+    sumz += rawz;
+  }
+
+  float divider_x = 245.0; // 1G で x が取る値
+  float divider_y = 245.0; // 1G で y が取る値
+  float divider_z = 225.0; // 1G で z が取る値
+
+  divider_x *= count;
+  divider_y *= count;
+  divider_z *= count;
+
+  // sum(x, y, z) は -10240 - 10240 をとる
+  // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める
+  // by kyontan
+  // NOTE: 割る値 は適宜調整してください
+  float x = clamp(sumx / divider_x, -1.0, 1.0);
+  float y = clamp(sumy / divider_y, -1.0, 1.0);
+  float z = clamp(sumz / divider_z, -1.0, 1.0);
+
+  shiftValue(x, y, z);
 }
 
 void Accel::shiftValue(float nx, float ny, float nz) {
@@ -66,6 +132,13 @@ void Accel::shiftValue(float nx, float ny, float nz) {
   float new_size = nx*nx + ny*ny + nz*nz;
   _diff[n_frames-1] = abs(new_size - _last_size);
   _last_size = new_size;
+}
+
+void Accel::resetFlags() {
+  _active = false;
+  _freefall = false;
+  _tap = false;
+  _doubletap = false;
 }
 
 void Accel::updateFlags() {
@@ -160,75 +233,3 @@ void Accel::sendi2c(int8_t id, int8_t reg, int8_t data) {
   Wire.endTransmission();
 };
 
-void Accel::init() {
-  // 加速度センサ の 初期化
-  sendi2c(ADXL345_ID, 0x2C, 0b00001100); // 3200Hz 書き出し
-  sendi2c(ADXL345_ID, 0x31, 0b00001000); // full resolution mode
-
-  adxl.powerOn();
-
-  adxl.setRangeSetting(2); // 測定範囲 (何G まで測定するか)
-
-  // 動作したかを監視する軸の設定 (1 == on; 0 == off)
-  //各軸の判定の論理和
-  adxl.setActivityX(0);
-  adxl.setActivityY(0);
-  adxl.setActivityZ(0);
-
-  // 動作してないを監視する軸の設定 (1 == on; 0 == off)
-  // 各軸の判定の論理積
-  adxl.setInactivityX(0);
-  adxl.setInactivityY(0);
-  adxl.setInactivityZ(0);
-
-  // タップされたことを検視する軸の設定 (1 == on; 0 == off)
-  adxl.setTapDetectionOnX(0);
-  adxl.setTapDetectionOnY(0);
-  adxl.setTapDetectionOnZ(0);
-
-  // setting all interupts to take place on int pin 1
-  // I had issues with int pin 2, was unable to reset it
-  adxl.setInterruptMapping(ADXL345_INT_SINGLE_TAP_BIT, ADXL345_INT1_PIN);
-  adxl.setInterruptMapping(ADXL345_INT_DOUBLE_TAP_BIT, ADXL345_INT1_PIN);
-  adxl.setInterruptMapping(ADXL345_INT_FREE_FALL_BIT,  ADXL345_INT1_PIN);
-  adxl.setInterruptMapping(ADXL345_INT_ACTIVITY_BIT,   ADXL345_INT1_PIN);
-  adxl.setInterruptMapping(ADXL345_INT_INACTIVITY_BIT, ADXL345_INT1_PIN);
-
-  // register interupt actions - 1 == on; 0 == off
-  adxl.setInterrupt(ADXL345_INT_SINGLE_TAP_BIT, 0);
-  adxl.setInterrupt(ADXL345_INT_DOUBLE_TAP_BIT, 0);
-  adxl.setInterrupt(ADXL345_INT_FREE_FALL_BIT,  0);
-  adxl.setInterrupt(ADXL345_INT_ACTIVITY_BIT,   0);
-  adxl.setInterrupt(ADXL345_INT_INACTIVITY_BIT, 0);
-}
-
-void Accel::updateAccel() {
-  // count が大きくなるほどノイズに強くなる (が遅くなる)
-  int count = 20, sumx = 0, sumy = 0, sumz = 0;
-  int rawx = 0, rawy = 0, rawz = 0;
-  // 水準器
-  for(int i=0; i<count; i++) {
-    adxl.readAccel(&rawx, &rawy, &rawz);
-    sumx += rawx;
-    sumy += rawy;
-    sumz += rawz;
-  }
-
-  float divider_x = 245.0; // 1G で x が取る値
-  float divider_y = 245.0; // 1G で y が取る値
-  float divider_z = 225.0; // 1G で z が取る値
-
-  divider_x *= count;
-  divider_y *= count;
-  divider_z *= count;
-
-  // sum(x, y, z) は -10240 - 10240 をとる
-  // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める
-  // by kyontan
-  // NOTE: 割る値 は適宜調整してください
-  float x = clamp(sumx / divider_x, -1.0, 1.0);
-  float y = clamp(sumy / divider_y, -1.0, 1.0);
-  float z = clamp(sumz / divider_z, -1.0, 1.0);
-
-  shiftValue(x, y, z);
-}
