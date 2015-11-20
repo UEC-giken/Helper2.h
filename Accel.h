@@ -48,11 +48,11 @@ class Accel {
     void debug_print(int i = -1);
 
   private:
-    const float _ThMaxAtFrameA;
-    const float _ThMinAtFrameB;
-    const float _ThMaxAtLatastFrame;
-    const float _ThMaximumSingleTapSpace;
-    const float _ThMaximumDoubleTapSpace;
+    float _ThMaxAtFrameA;
+    float _ThMinAtFrameB;
+    float _ThMaxAtLatastFrame;
+    float _ThMaximumSingleTapSpace;
+    float _ThMaximumDoubleTapSpace;
 
     // 加速度センサ
     ADXL345 adxl;
