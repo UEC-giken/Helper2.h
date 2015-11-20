@@ -6,7 +6,7 @@
 // val < min         :=> min
 // min <= val <= max :=> val
 // max < val         :=> max
-float clamp(float val, float min, float max) {
+float Accel::clamp(float val, float min, float max) {
   if (val < min) { return min; }
   if (max < val) { return max; }
 
