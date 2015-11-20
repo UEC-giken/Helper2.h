@@ -28,7 +28,7 @@ void initialize() {
 
   // debug用
   // Serial.begin(9600);
-  Serial.println("started");
+  // Serial.println("started");
 
   delay(1000);//初期状態確認用
 }
