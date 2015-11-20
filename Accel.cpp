@@ -214,6 +214,18 @@ void Accel::updateFlags() {
 }
 
 void Accel::debug_print(int i) {
+  Serial.print("(");
+  Serial.print(_x[i], 2);
+  Serial.print(", ");
+  Serial.print(_y[i], 2);
+  Serial.print(", ");
+  Serial.print(_z[i], 2);
+  Serial.print(", ");
+  Serial.print(_diff[i], 2);
+  Serial.println(")");
+}
+
+void Accel::debug_threshold() {
   if (Serial.available() > 0){
     uint8_t j = 1, length = Serial.available();
     int8_t p[10] = {0};
@@ -240,28 +252,16 @@ void Accel::debug_print(int i) {
       _ThMaximumDoubleTapSpace = atof(&(string[p[4]]));
     }
     
-    Serial.print("_TH_A : ");
+    Serial.print("_ThMaxAtFrameA : ");
     Serial.print(_ThMaxAtFrameA);
-    Serial.print(" _TH_B : ");
+    Serial.print(" _ThMinAtFrameB : ");
     Serial.print(_ThMinAtFrameB);
-    Serial.print(" _TH_C : ");
+    Serial.print(" _ThMaxAtLatastFrame : ");
     Serial.print(_ThMaxAtLatastFrame);
-    Serial.print(" _TH_D : ");
+    Serial.print(" _ThMaximumSingleTapSpace : ");
     Serial.print(_ThMaximumSingleTapSpace);
-    Serial.print(" _TH_E : ");
+    Serial.print(" _ThMaximumDoubleTapSpace : ");
     Serial.println(_ThMaximumDoubleTapSpace);
-  }
-
-  if (i != -1){
-    Serial.print("(");
-    Serial.print(_x[i], 2);
-    Serial.print(", ");
-    Serial.print(_y[i], 2);
-    Serial.print(", ");
-    Serial.print(_z[i], 2);
-    Serial.print(", ");
-    Serial.print(_diff[i], 2);
-    Serial.println(")");
   }
 }
 

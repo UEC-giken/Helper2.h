@@ -68,6 +68,13 @@
 + i: 0 - (n_frames - 1) (値が大きいほど新しい, n\_frames は Accel.h にて定義されている)
 + Default: n\_frames = 30, i = n_frame - 1
 
+#### void debug_threshold()
+
++ Serial モニタから数字を5つ入力することで閾値を変更できる
++ 左から _ThMaxAtFrameA _ThMinAtFrameB _ThMaxAtLatastFrame _ThMaximumSingleTapSpace _ThMaximumDoubleTapSpace を区切りを入れて入力する
++ 一番左は詰めて数字を入力されたし
++ 確認用の出力として現在の閾値が一行で出力される
+
 ### LED
 
 インスタンスをグローバルで作成済み(led1, led2)

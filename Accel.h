@@ -45,7 +45,8 @@ class Accel {
     void init();
     void updateAccel();
 
-    void debug_print(int i = -1);
+    void debug_print(int i);
+    void debug_threshold();
 
   private:
     float _ThMaxAtFrameA;
