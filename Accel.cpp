@@ -1,16 +1,28 @@
 #include <Arduino.h>
+#include <Wire.h> // I2C用
 #include "Accel.h"
 
+// val の値を min と max の値に収まるようにする
+// val < min         :=> min
+// min <= val <= max :=> val
+// max < val         :=> max
+float Accel::clamp(float val, float min, float max) {
+  if (val < min) { return min; }
+  if (max < val) { return max; }
+
+  return val;
+}
+
 float Accel::x() {
-  return _x[29];
+  return _x[n_frames-1];
 };
 
 float Accel::y() {
-  return _y[29];
+  return _y[n_frames-1];
 };
 
 float Accel::z() {
-  return _z[29];
+  return _z[n_frames-1];
 };
 
 
@@ -30,25 +42,81 @@ bool Accel::doubletap() {
   return _doubletap;
 };
 
-void Accel::setActive(bool new_active) {
-  _active = new_active;
-};
+void Accel::init() {
+  // 加速度センサ の 初期化
+  sendi2c(ADXL345_ID, 0x2C, 0b00001100); // 3200Hz 書き出し
+  sendi2c(ADXL345_ID, 0x31, 0b00001000); // full resolution mode
 
-void Accel::setFreefall(bool new_freefall) {
-  _freefall = new_freefall;
-};
+  adxl.powerOn();
 
-void Accel::setTap(bool new_tap) {
-  _tap = new_tap;
-};
+  adxl.setRangeSetting(2); // 測定範囲 (何G まで測定するか)
 
-void Accel::setDoubletap(bool new_doubletap) {
-  _doubletap = new_doubletap;
-};
+  // 動作したかを監視する軸の設定 (1 == on; 0 == off)
+  //各軸の判定の論理和
+  adxl.setActivityX(0);
+  adxl.setActivityY(0);
+  adxl.setActivityZ(0);
 
+  // 動作してないを監視する軸の設定 (1 == on; 0 == off)
+  // 各軸の判定の論理積
+  adxl.setInactivityX(0);
+  adxl.setInactivityY(0);
+  adxl.setInactivityZ(0);
 
-void Accel::addValue(float nx, float ny, float nz) {
-  for (int i=0; i<29; i++) {
+  // タップされたことを検視する軸の設定 (1 == on; 0 == off)
+  adxl.setTapDetectionOnX(0);
+  adxl.setTapDetectionOnY(0);
+  adxl.setTapDetectionOnZ(0);
+
+  // setting all interupts to take place on int pin 1
+  // I had issues with int pin 2, was unable to reset it
+  adxl.setInterruptMapping(ADXL345_INT_SINGLE_TAP_BIT, ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_DOUBLE_TAP_BIT, ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_FREE_FALL_BIT,  ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_ACTIVITY_BIT,   ADXL345_INT1_PIN);
+  adxl.setInterruptMapping(ADXL345_INT_INACTIVITY_BIT, ADXL345_INT1_PIN);
+
+  // register interupt actions - 1 == on; 0 == off
+  adxl.setInterrupt(ADXL345_INT_SINGLE_TAP_BIT, 0);
+  adxl.setInterrupt(ADXL345_INT_DOUBLE_TAP_BIT, 0);
+  adxl.setInterrupt(ADXL345_INT_FREE_FALL_BIT,  0);
+  adxl.setInterrupt(ADXL345_INT_ACTIVITY_BIT,   0);
+  adxl.setInterrupt(ADXL345_INT_INACTIVITY_BIT, 0);
+}
+
+void Accel::updateAccel() {
+  // count が大きくなるほどノイズに強くなる (が遅くなる)
+  int count = 20, sumx = 0, sumy = 0, sumz = 0;
+  int rawx = 0, rawy = 0, rawz = 0;
+  // 水準器
+  for(int i=0; i<count; i++) {
+    adxl.readAccel(&rawx, &rawy, &rawz);
+    sumx += rawx;
+    sumy += rawy;
+    sumz += rawz;
+  }
+
+  float divider_x = 245.0; // 1G で x が取る値
+  float divider_y = 245.0; // 1G で y が取る値
+  float divider_z = 225.0; // 1G で z が取る値
+
+  divider_x *= count;
+  divider_y *= count;
+  divider_z *= count;
+
+  // sum(x, y, z) は -10240 - 10240 をとる
+  // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める
+  // by kyontan
+  // NOTE: 割る値 は適宜調整してください
+  float x = clamp(sumx / divider_x, -1.0, 1.0);
+  float y = clamp(sumy / divider_y, -1.0, 1.0);
+  float z = clamp(sumz / divider_z, -1.0, 1.0);
+
+  shiftValue(x, y, z);
+}
+
+void Accel::shiftValue(float nx, float ny, float nz) {
+  for (int i=0; i<n_frames-1; i++) {
       _x[i] = _x[i+1];
       _y[i] = _y[i+1];
       _z[i] = _z[i+1];
@@ -56,25 +124,29 @@ void Accel::addValue(float nx, float ny, float nz) {
       _millis[i] = _millis[i+1];
   }
 
-  _x[29] = nx;
-  _y[29] = ny;
-  _z[29] = nz;
-  _millis[29] = millis();
+  _x[n_frames-1] = nx;
+  _y[n_frames-1] = ny;
+  _z[n_frames-1] = nz;
+  _millis[n_frames-1] = millis();
 
   float new_size = nx*nx + ny*ny + nz*nz;
-  _diff[29] = abs(new_size - _last_size);
+  _diff[n_frames-1] = abs(new_size - _last_size);
   _last_size = new_size;
+}
 
+void Accel::resetFlags() {
   _active = false;
   _freefall = false;
   _tap = false;
   _doubletap = false;
+}
 
+void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[29] - _diff[28]) ||
-      0.1 < abs(_diff[29] - _diff[27]) ||
-      0.1 < abs(_diff[29] - _diff[26]) ||
-      0.1 < abs(_diff[29] - _diff[25])) {
+  if (0.1 < abs(_diff[n_frames-1] - _diff[28]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[27]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[26]) ||
+      0.1 < abs(_diff[n_frames-1] - _diff[25])) {
     _active = true;
   }
 
@@ -83,20 +155,32 @@ void Accel::addValue(float nx, float ny, float nz) {
   }
   
   /**
-  * 設定すべき値は a-e, p-r の8つ
+  * 設定すべき値は 以下の8つです ([]内は単位)
   *
-  * 前提として、加速度 (x, y, z) をそれぞれ30フレーム(回分)保持する
+  * - ThFrameA [frame]
+  * - ThFrameB [frame]
   *
-  * 加速度の大きさ^2 = x^2 + y^2 + z^2 とする。
-  * 変化量 = 現在のフレームの(加速度の大きさ^2) - 直前フレームの(加速度の大きさ^2) とする。
-  * a フレーム前の変化量が p 未満​ かつ ​b フレーム前の変化量が q 以上​ かつ ​最新フレームの変化量が r 未満​ でタップ検知とする
+  * - ThMaxAtFrameA [(m/s^2)^2]
+  * - ThMinAtFrameB [(m/s^2)^2]
+  * - ThMaxAtLatastFrame [(m/s^2)^2]
   *
-  * ダブルタップ検知については
-  * d フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
-  * d フレーム以上離れたタップを ダブルタップとする
-  * e フレーム以上離れたタップは異なるタップとする  (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace [ms]
+  * - ThMaximumDoubleTapSpace [ms]
+  *
+  * 前提として、加速度 (x, y, z) をそれぞれn_frames回(フレーム)分保持する
+  *
+  * 変化量 = |現在のフレームの加速度|^2 - |直前フレームの加速度|^2 とする。
+  * タップ検知: 以下の3条件を満たした時にタップ検知とする
+  * - (ThFrameA フレーム前の変化量) < ThMaxAtFrameA
+  * - ThMinAtFrameB < (ThFrameB フレーム前の変化量)
+  * - (最新フレームの変化量) < ThMaxAtLatastFrame
+  *
+  * ダブルタップ検知:
+  * - ThMaximumSingleTapSpace フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace フレーム以上離れたタップを ダブルタップとする
+  * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
-  if (_diff[0] < _TH_A && _TH_B < _diff[15] && _diff[29] < _TH_C) {
+  if (_diff[0] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[15] && _diff[n_frames-1] < _ThMaxAtLatastFrame) {
     long int t_diff = millis() - _t_lasttap;
 
     if (debug) {
@@ -105,10 +189,10 @@ void Accel::addValue(float nx, float ny, float nz) {
       Serial.print("  ");
     }
 
-    if (_TH_D < t_diff) {
+    if (_ThMaximumSingleTapSpace < t_diff) {
       _tap = true;
 
-      if (t_diff < _TH_E) {
+      if (t_diff < _ThMaximumDoubleTapSpace) {
         _doubletap = true;
       }
 
@@ -149,23 +233,23 @@ void Accel::debug_print(int i) {
     }
     
     if (j == 5){
-      _TH_A = atof(&(string[p[0]]));
-      _TH_B = atof(&(string[p[1]]));
-      _TH_C = atof(&(string[p[2]]));
-      _TH_D = atof(&(string[p[3]]));
-      _TH_E = atof(&(string[p[4]]));
+      _ThMaxAtFrameA = atof(&(string[p[0]]));
+      _ThMinAtFrameB = atof(&(string[p[1]]));
+      _ThMaxAtLatastFrame = atof(&(string[p[2]]));
+      _ThMaximumSingleTapSpace = atof(&(string[p[3]]));
+      _ThMaximumDoubleTapSpace = atof(&(string[p[4]]));
     }
     
     Serial.print("_TH_A : ");
-    Serial.print(_TH_A);
+    Serial.print(_ThMaxAtFrameA);
     Serial.print(" _TH_B : ");
-    Serial.print(_TH_B);
+    Serial.print(_ThMinAtFrameB);
     Serial.print(" _TH_C : ");
-    Serial.print(_TH_C);
+    Serial.print(_ThMaxAtLatastFrame);
     Serial.print(" _TH_D : ");
-    Serial.print(_TH_D);
+    Serial.print(_ThMaximumSingleTapSpace);
     Serial.print(" _TH_E : ");
-    Serial.println(_TH_E);
+    Serial.println(_ThMaximumDoubleTapSpace);
   }
 
   if (i != -1){
@@ -180,3 +264,12 @@ void Accel::debug_print(int i) {
     Serial.println(")");
   }
 }
+
+// I2C通信
+void Accel::sendi2c(int8_t id, int8_t reg, int8_t data) {
+  Wire.beginTransmission(id); // Adxl345 のアドレス: 0x1D
+  Wire.write(reg);
+  Wire.write(data);
+  Wire.endTransmission();
+};
+
