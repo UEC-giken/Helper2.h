@@ -81,7 +81,7 @@ void Accel::addValue(float nx, float ny, float nz) {
   if (_last_size < 0.2) {
     _freefall = true;
   }
-
+  
   /**
   * 設定すべき値は a-e, p-r の8つ
   *
@@ -130,13 +130,61 @@ void Accel::addValue(float nx, float ny, float nz) {
 }
 
 void Accel::debug_print(int i) {
-  Serial.print("(");
-  Serial.print(_x[i], 2);
-  Serial.print(", ");
-  Serial.print(_y[i], 2);
-  Serial.print(", ");
-  Serial.print(_z[i], 2);
-  Serial.print(", ");
-  Serial.print(_diff[i], 2);
-  Serial.print(")");
+  if (Serial.available() > 0){
+    uint8_t length = Serial.available();
+    uint8_t p[10] = {0, };
+    p[0] = 0;
+    
+    char string[length+10];
+    for (uint8_t i = 0, j = 0; i < length; i++){
+      string[j] = Serial.read();
+      if (string[j] < '0' || string[j] > '9' || string[j] != '.'){
+        j++;
+        string[j] = '\0';
+        p[j-i] = j + 1;
+      }
+      
+      j++;
+    }
+    
+    if (p[5] == 0){
+      _TH_A = atof(&(string[p[0]]));
+      _TH_B = atof(&(string[p[1]]));
+      _TH_C = atof(&(string[p[2]]));
+      _TH_D = atof(&(string[p[3]]));
+      _TH_E = atof(&(string[p[4]]));
+    }
+    
+    Serial.print("_TH_A : ");
+    Serial.print(_TH_A);
+    Serial.print(" _TH_B : ");
+    Serial.print(_TH_B);
+    Serial.print(" _TH_C : ");
+    Serial.print(_TH_C);
+    Serial.print(" _TH_D : ");
+    Serial.print(_TH_D);
+    Serial.print(" _TH_E : ");
+    Serial.println(_TH_E);
+    
+    Serial.println(length);
+    Serial.println(p[0]);
+    Serial.println(p[1]);
+    Serial.println(p[2]);
+    Serial.println(p[3]);
+    Serial.println(p[4]);
+    
+    // Serial.flush();
+  }
+
+  if (i != -1){
+    Serial.print("(");
+    Serial.print(_x[i], 2);
+    Serial.print(", ");
+    Serial.print(_y[i], 2);
+    Serial.print(", ");
+    Serial.print(_z[i], 2);
+    Serial.print(", ");
+    Serial.print(_diff[i], 2);
+    Serial.println(")");
+  }
 }

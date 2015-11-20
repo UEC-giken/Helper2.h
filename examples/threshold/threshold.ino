@@ -1,0 +1,29 @@
+#include <Helper2.h>
+#include <Wire.h>
+#include <TimerOne.h>
+
+int incomingByte = 0;
+
+void setup() {
+	Serial.begin(9600);
+	initialize();
+
+	led1.off();
+	led2.color(0);
+	led2.off();
+	led2.color(0.5);
+}
+
+void loop() {
+	if (accel.tap()) {
+		led1.randomcolor();
+	}
+
+	if (accel.doubletap()) {
+		led2.flip();
+	}
+	
+	accel.debug_print();
+
+	wait(200);
+};

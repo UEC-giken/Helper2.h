@@ -37,13 +37,14 @@ class Accel {
     // 値を追加するときはこれを呼ぶこと
     void addValue(float nx, float ny, float nz);
 
-    void debug_print(int i);
+    void debug_print(int i = -1);
+    
   private:
-    const float _TH_A;
-    const float _TH_B;
-    const float _TH_C;
-    const float _TH_D;
-    const float _TH_E;
+    float _TH_A;
+    float _TH_B;
+    float _TH_C;
+    float _TH_D;
+    float _TH_E;
       
     bool _active;
     bool _freefall;
