@@ -200,26 +200,33 @@ void Accel::init() {
   adxl.setInterrupt(ADXL345_INT_INACTIVITY_BIT, 0);
 }
 
-void Accel::updateData() {
+void Accel::updateAccel() {
+  // count が大きくなるほどノイズに強くなる (が遅くなる)
   int count = 20, sumx = 0, sumy = 0, sumz = 0;
   int rawx = 0, rawy = 0, rawz = 0;
   // 水準器
-  for(int i=0; i<count; i++){
+  for(int i=0; i<count; i++) {
     adxl.readAccel(&rawx, &rawy, &rawz);
     sumx += rawx;
     sumy += rawy;
     sumz += rawz;
   }
 
-  // // sum(x, y, z) は -10240 - 10240 をとる?
-  // // 1G で x, y: 4900, z: 4500 ぐらいの値をとる => 正規化して -1.0 - 1.0 に縮める
-  // // by kyontan
-  // // NOTE: 割る値 は適宜調整してください
-  float x = clamp(-sumx / 4900.0, -1.0, 1.0);
-  float y = clamp(-sumy / 4900.0, -1.0, 1.0);
-  float z = clamp(-sumz / 4500.0, -1.0, 1.0);
+  int16_t divider_x = 245 * 10; // 1G で x が取る値
+  int16_t divider_y = 245 * 10; // 1G で y が取る値
+  int16_t divider_z = 225 * 10; // 1G で z が取る値
+
+  divider_x *= count;
+  divider_y *= count;
+  divider_z *= count;
+
+  // sum(x, y, z) は -10240 - 10240 をとる
+  // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める
+  // by kyontan
+  // NOTE: 割る値 は適宜調整してください
+  float x = clamp(sumx / divider_x, -1.0, 1.0);
+  float y = clamp(sumy / divider_y, -1.0, 1.0);
+  float z = clamp(sumz / divider_z, -1.0, 1.0);
 
   addValue(x, y, z);
-
-
 }

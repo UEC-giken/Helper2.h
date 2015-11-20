@@ -42,7 +42,7 @@ class Accel {
     }
 
     void init();
-    void updateData();
+    void updateAccel();
 
     void debug_print(int i);
 

@@ -44,7 +44,7 @@ void wait(int16_t msec) {
   accel.resetFlag();
 
   while ((millis() - start) <= msec) {
-    accel.updateData();
+    accel.updateAccel();
 
   //   if (accel.tap())
   //     is_tapped = true;
