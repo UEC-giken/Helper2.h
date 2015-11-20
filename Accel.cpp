@@ -234,7 +234,7 @@ void Accel::debug_threshold() {
       string[i] = Serial.read();
       if ((string[i] < '0' || string[i] > '9') && string[i] != '.'){
         string[i] = '\0';
-        if (string[i-1] == '\0'){
+        if (0 < i && string[i-1] == '\0'){
           j--;
         }
         
