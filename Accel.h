@@ -26,7 +26,7 @@ class Accel {
 
     bool debug;
 
-    Accel(float a = 0.02, float b = 0.28, float c = 0.02, float d = 100, float e = 150) :
+    Accel(float a = 0.02, float b = 0.20, float c = 0.02, float d = 130, float e = 200) :
       _ThMaxAtFrameA(a),
       _ThMinAtFrameB(b),
       _ThMaxAtLatastFrame(c),
