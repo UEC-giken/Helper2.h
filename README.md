@@ -68,6 +68,10 @@
 + i: 0 - (n_frames - 1) (値が大きいほど新しい, n\_frames は Accel.h にて定義されている)
 + Default: n\_frames = 30, i = n_frame - 1
 
+#### void debug\_print\_threshold()
+
++ 内部で保持する しきい値 の値を Serial でプリントする
+
 #### void debug_threshold()
 
 + Serial モニタから数字を5つ入力することで閾値を変更できる

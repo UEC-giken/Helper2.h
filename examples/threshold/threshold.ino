@@ -5,6 +5,7 @@
 void setup() {
 	Serial.begin(9600);
 	initialize();
+	accel.debug_print_threshold();
 
 	led1.on();
 	led2.color(0);

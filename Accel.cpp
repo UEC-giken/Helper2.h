@@ -224,6 +224,19 @@ void Accel::debug_print(int i) {
   Serial.println(")");
 }
 
+void Accel::debug_print_threshold() {
+  Serial.print("_ThMaxAtFrameA: ");
+  Serial.print(_ThMaxAtFrameA);
+  Serial.print(", _ThMinAtFrameB: ");
+  Serial.print(_ThMinAtFrameB);
+  Serial.print(", _ThMaxAtLatastFrame: ");
+  Serial.print(_ThMaxAtLatastFrame);
+  Serial.print(", _ThMaximumSingleTapSpace: ");
+  Serial.print(_ThMaximumSingleTapSpace);
+  Serial.print(", _ThMaximumDoubleTapSpace: ");
+  Serial.println(_ThMaximumDoubleTapSpace);
+}
+
 void Accel::debug_threshold() {
   if (Serial.available() > 0){
     uint8_t j = 1, length = Serial.available();
@@ -249,18 +262,9 @@ void Accel::debug_threshold() {
       _ThMaxAtLatastFrame = atof(&(str[p[2]]));
       _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
       _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
+
+      debug_print_threshold();
     }
-    
-    Serial.print("_ThMaxAtFrameA : ");
-    Serial.print(_ThMaxAtFrameA);
-    Serial.print(" _ThMinAtFrameB : ");
-    Serial.print(_ThMinAtFrameB);
-    Serial.print(" _ThMaxAtLatastFrame : ");
-    Serial.print(_ThMaxAtLatastFrame);
-    Serial.print(" _ThMaximumSingleTapSpace : ");
-    Serial.print(_ThMaximumSingleTapSpace);
-    Serial.print(" _ThMaximumDoubleTapSpace : ");
-    Serial.println(_ThMaximumDoubleTapSpace);
   }
 }
 

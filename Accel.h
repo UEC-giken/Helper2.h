@@ -46,6 +46,7 @@ class Accel {
     void updateAccel();
 
     void debug_print(int i);
+    void debug_print_threshold();
     void debug_threshold();
 
   private:
