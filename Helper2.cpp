@@ -1,6 +1,6 @@
 #include <ADXL345.h> // 加速度センサ用
 
-#include "Helper2_protected.h"
+#include "Helper2.h"
 #include "LED.h"
 #include "Accel.h"
 
