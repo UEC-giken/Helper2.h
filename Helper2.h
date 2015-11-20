@@ -11,7 +11,6 @@ extern LED led2;
 extern Accel accel;
 
 void initialize();
-void initializeAccelerometer();
 
 void wait(int16_t msec);
 
