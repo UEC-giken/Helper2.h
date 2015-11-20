@@ -10,28 +10,54 @@
 
 ### Accel
 
-加速度センサーの値を保持するクラス
-インスタンスをグローバルで作成済み(accel)
++ 加速度センサーの値を保持するクラス
++ インスタンスをグローバルで作成済み(accel)
++ tap検知の閾値をコンストラクタの引数から変更可能
 
-#### float x, y, z
+#### float x(), y(), z()
 
 + 加速度センサーの x, y, z 軸の値 (0.0 - 1.0)
 
-#### bool active;
+#### bool active()
 
 + 加速度センサーが動いているかどうか
 
-#### bool freefall;
+#### bool freefall()
 
 + 加速度センサーが自由落下しているかどうか
 
-#### bool tap;
+#### bool tap()
 
 + 加速度センサーがタップされたかどうか (コツンと叩く)
 
-#### bool doubletap;
+#### bool doubletap()
 
 + 加速度センサーがダブルタップされたかどうか
+
+#### void resetFlags()
+
++ tapなどの状態を示すフラグを`false`にリセットする
++ `wait()`の先頭で呼び出されること
+
+#### void updateFlags()
+
++ tapなどの状態を示すフラグを更新
++ `wait()`の中で呼び出されある程度保存してあるデータから判定
+
+#### bool debug
+
++ デバッグモードを有効化
++ Default: false
+
+#### void init()
+
++ 加速度センサーを初期化
++ `setup()`関数の中で呼び出されないとクラッシュ
++ `initialize()`に内包
+
+#### void updateAccel()
+
++ `wait()`の中で呼び出され加速度センサーの値を保存
 
 #### void debug_print(int i)
 
