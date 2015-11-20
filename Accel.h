@@ -19,11 +19,6 @@ class Accel {
     bool tap();
     bool doubletap();
 
-    // void setActive(bool new_active);
-    // void setFreefall(bool new_freefall);
-    // void setTap(bool new_tap);
-    // void setDoubletap(bool new_doubletap);
-
     void resetFlag();
 
     bool debug;
@@ -37,11 +32,6 @@ class Accel {
       _last_size(0), _t_lasttap(0), debug(false),
       _active(false), _freefall(false), _tap(false), _doubletap(false)
     {
-      // // 加速度センサ初期化
-      // sendi2c(ADXL345_ID, 0x2C, 0b00001100); //3200Hz書き出し
-      // sendi2c(ADXL345_ID, 0x31, 0b00001000); //fullresmode
-      // initializeAccelerometer();
-
       for (int i=0; i<30; i++) {
         _x[i] = 0;
         _y[i] = 0;

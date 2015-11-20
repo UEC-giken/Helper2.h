@@ -42,22 +42,6 @@ bool Accel::doubletap() {
   return _doubletap;
 };
 
-// void Accel::setActive(bool new_active) {
-//   _active = new_active;
-// };
-
-// void Accel::setFreefall(bool new_freefall) {
-//   _freefall = new_freefall;
-// };
-
-// void Accel::setTap(bool new_tap) {
-//   _tap = new_tap;
-// };
-
-// void Accel::setDoubletap(bool new_doubletap) {
-//   _doubletap = new_doubletap;
-// };
-
 void Accel::resetFlag() {
   _active = false;
   _freefall = false;
