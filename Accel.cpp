@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <Wire.h> // I2C用
-#include <ADXL345.h> // 加速度センサ用
 #include "Accel.h"
 
 // val の値を min と max の値に収まるようにする
@@ -235,4 +234,12 @@ void Accel::updateData() {
   float z = clamp(-sumz / 4500.0, -1.0, 1.0);
 
   addValue(x, y, z);
-};
+}
+
+void Accel::init(){
+  // 加速度センサ初期化
+  sendi2c(ADXL345_ID, 0x2C, 0b00001100); //3200Hz書き出し
+  sendi2c(ADXL345_ID, 0x31, 0b00001000); //fullresmode
+  initializeAccelerometer();
+
+}

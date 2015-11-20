@@ -5,13 +5,7 @@
 
 #include "Helper2_protected.h"
 #include "LED.h"
-
-// I2C
-// 直接接続だと 0x53, そうでないと 0x1D
-#define ADXL345_ID 0x53
-
-// 加速度センサ
-ADXL345 adxl;
+#include "Accel.h"
 
 Accel accel;
 
@@ -20,15 +14,11 @@ LED led2(1);
 
 void initialize() {
   AN_LED.begin();
+  accel.init();
 
   // ピン初期化
   // pinMode(2,OUTPUT);
   // digitalWrite(2,LOW);
-
-  // 加速度センサ初期化
-  accel.sendi2c(ADXL345_ID, 0x2C, 0b00001100); //3200Hz書き出し
-  accel.sendi2c(ADXL345_ID, 0x31, 0b00001000); //fullresmode
-  accel.initializeAccelerometer();
 
   // タイマー1
   //割り込み周期[usec]//887@16MH動作//8Mhz動作なら単純に考えて倍
@@ -38,7 +28,7 @@ void initialize() {
 
   // debug用
   // Serial.begin(9600);
-  // Serial.println("started");
+  Serial.println("started");
 
   delay(1000);//初期状態確認用
 }
