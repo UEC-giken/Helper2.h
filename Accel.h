@@ -41,9 +41,7 @@ class Accel {
       }
     }
 
-    // 値を追加するときはこれを呼ぶこと
     void updateData();
-    void addValue(float nx, float ny, float nz);
     void init();
 
     void debug_print(int i);
