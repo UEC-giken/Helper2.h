@@ -42,22 +42,28 @@ bool Accel::doubletap() {
   return _doubletap;
 };
 
-void Accel::setActive(bool new_active) {
-  _active = new_active;
-};
+// void Accel::setActive(bool new_active) {
+//   _active = new_active;
+// };
 
-void Accel::setFreefall(bool new_freefall) {
-  _freefall = new_freefall;
-};
+// void Accel::setFreefall(bool new_freefall) {
+//   _freefall = new_freefall;
+// };
 
-void Accel::setTap(bool new_tap) {
-  _tap = new_tap;
-};
+// void Accel::setTap(bool new_tap) {
+//   _tap = new_tap;
+// };
 
-void Accel::setDoubletap(bool new_doubletap) {
-  _doubletap = new_doubletap;
-};
+// void Accel::setDoubletap(bool new_doubletap) {
+//   _doubletap = new_doubletap;
+// };
 
+void Accel::resetFlag() {
+  _active = false;
+  _freefall = false;
+  _tap = false;
+  _doubletap = false;
+}
 
 void Accel::addValue(float nx, float ny, float nz) {
   for (int i=0; i<n_frames-1; i++) {
@@ -76,11 +82,6 @@ void Accel::addValue(float nx, float ny, float nz) {
   float new_size = nx*nx + ny*ny + nz*nz;
   _diff[n_frames-1] = abs(new_size - _last_size);
   _last_size = new_size;
-
-  _active = false;
-  _freefall = false;
-  _tap = false;
-  _doubletap = false;
 
   // 検出をゆるくするため、数フレームほど比較する
   if (0.1 < abs(_diff[n_frames-1] - _diff[28]) ||

@@ -19,10 +19,12 @@ class Accel {
     bool tap();
     bool doubletap();
 
-    void setActive(bool new_active);
-    void setFreefall(bool new_freefall);
-    void setTap(bool new_tap);
-    void setDoubletap(bool new_doubletap);
+    // void setActive(bool new_active);
+    // void setFreefall(bool new_freefall);
+    // void setTap(bool new_tap);
+    // void setDoubletap(bool new_doubletap);
+
+    void resetFlag();
 
     bool debug;
 
