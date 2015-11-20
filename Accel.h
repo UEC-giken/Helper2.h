@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <ADXL345.h> // 加速度センサ用
 
 #pragma once
 
@@ -34,16 +35,23 @@ class Accel {
         }
     }
 
+    void sendi2c(int8_t id, int8_t reg, int8_t data);
+    void initializeAccelerometer();
+    void updateData();
+
     // 値を追加するときはこれを呼ぶこと
     void addValue(float nx, float ny, float nz);
 
     void debug_print(int i);
+    
   private:
     const float _TH_A;
     const float _TH_B;
     const float _TH_C;
     const float _TH_D;
     const float _TH_E;
+    
+    ADXL345 adxl;
       
     bool _active;
     bool _freefall;
@@ -63,4 +71,5 @@ class Accel {
     Accel(const Accel &other) : 
       _TH_A(other._TH_A), _TH_B(other._TH_B), _TH_C(other._TH_C), _TH_D(other._TH_D), _TH_E(other._TH_E) 
     {}
+    
 };
