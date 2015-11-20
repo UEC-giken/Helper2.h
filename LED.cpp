@@ -76,7 +76,7 @@ void LED::randomcolor() {
   reflection();
 }
 
-void LED::colorcircle(uint8_t span) {
+void LED::colorcircle(float span) {
   color(hue_ + span);
 }
 
