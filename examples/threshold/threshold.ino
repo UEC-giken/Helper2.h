@@ -1,6 +1,5 @@
 #include <Helper2.h>
-// #include <Wire.h>
-// #include <TimerOne.h>
+#include <Wire.h>
 
 void setup() {
 	Serial.begin(9600);
@@ -21,7 +20,7 @@ void loop() {
 	if (accel.doubletap()) {
 		led2.flip();
 	}
-	
+
 	accel.debug_threshold();
 
 	wait(200);

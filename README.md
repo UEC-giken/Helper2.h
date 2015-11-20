@@ -74,10 +74,10 @@
 
 #### void debug_threshold()
 
-+ Serial モニタから数字を5つ入力することで閾値を変更できる
-+ 左から _ThMaxAtFrameA _ThMinAtFrameB _ThMaxAtLatastFrame _ThMaximumSingleTapSpace _ThMaximumDoubleTapSpace を区切りを入れて入力する
-+ 一番左は詰めて数字を入力されたし
-+ 確認用の出力として現在の閾値が一行で出力される
++ Serial モニタから数字を5つ入力することで しきい値 を変更できる
++ ThMaxAtFrameA, ThMinAtFrameB, ThMaxAtLatastFrame, ThMaximumSingleTapSpace, ThMaximumDoubleTapSpace の順に、区切り('0' - '9', '.' 以外ならなんでも良い)を入れて入力する
++ 一番左は詰めて数字を入力する必要がある
++ 確認用の出力として現在の しきい値 が一行で出力される
 
 ### LED
 
