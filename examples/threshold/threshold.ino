@@ -1,8 +1,6 @@
 #include <Helper2.h>
-#include <Wire.h>
-#include <TimerOne.h>
-
-int incomingByte = 0;
+// #include <Wire.h>
+// #include <TimerOne.h>
 
 void setup() {
 	Serial.begin(9600);
