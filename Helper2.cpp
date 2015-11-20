@@ -37,30 +37,11 @@ void initialize() {
 void wait(int16_t msec) {
   uint32_t start = millis();
 
-  // bool is_tapped = false;
-  // bool is_doubletapped = false;
-  // bool is_active = false;
-  // bool is_freefall = false;
   accel.resetFlags();
 
   while ((millis() - start) <= msec) {
     accel.updateAccel();
     accel.updateFlags();
-
-  //   if (accel.tap())
-  //     is_tapped = true;
-  //   if (accel.doubletap())
-  //     is_doubletapped = true;
-  //   if (accel.active())
-  //     is_active = true;
-  //   if (accel.freefall())
-  //     is_freefall = true;
-  }
-
-  // accel.setTap(is_tapped);
-  // accel.setDoubletap(is_doubletapped);
-  // accel.setActive(is_active);
-  // accel.setFreefall(is_freefall);
 };
 
 // timer1割り込みで走る関数
