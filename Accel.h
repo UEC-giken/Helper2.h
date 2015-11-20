@@ -4,20 +4,24 @@
 
 class Accel {
   public:
-    float x;
-    float y;
-    float z;
+    float x();
+    float y();
+    float z();
 
-    // ここは getter にしたほうが良い?
-    bool active;
-    bool freefall;
-    bool tap;
-    bool doubletap;
+    bool active();
+    bool freefall();
+    bool tap();
+    bool doubletap();
+
+    void setActive(bool new_active);
+    void setFreefall(bool new_freefall);
+    void setTap(bool new_tap);
+    void setDoubletap(bool new_doubletap);
 
     bool debug;
 
-    Accel() : x(0), y(0), z(0), _last_size(0), _t_lasttap(0), debug(false),
-              active(false), freefall(false), tap(false), doubletap(false) {
+    Accel() : _last_size(0), _t_lasttap(0), debug(false),
+              _active(false), _freefall(false), _tap(false), _doubletap(false) {
         for (int i=0; i<30; i++) {
             _x[i] = 0;
             _y[i] = 0;
@@ -32,8 +36,11 @@ class Accel {
 
     void debug_print(int i);
   private:
-    const float 
-      
+    bool _active;
+    bool _freefall;
+    bool _tap;
+    bool _doubletap;
+
     float _x[30];
     float _y[30];
     float _z[30];

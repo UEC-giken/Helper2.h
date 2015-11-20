@@ -12,13 +12,13 @@ void setup() {
 }
 
 void loop() {
-	if (accel.freefall) {
+	if (accel.freefall()) {
 		led1.on();
 	} else {
 		led1.off();
 	}
 
-	if (accel.active) {
+	if (accel.active()) {
 		led2.on();
 	} else {
 		led2.off();

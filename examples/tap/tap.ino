@@ -12,11 +12,11 @@ void setup() {
 }
 
 void loop() {
-	if (accel.tap) {
+	if (accel.tap()) {
 		led1.randomcolor();
 	}
 
-	if (accel.doubletap) {
+	if (accel.doubletap()) {
 		led2.flip();
 	}
 
