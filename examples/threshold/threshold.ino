@@ -21,7 +21,7 @@ void loop() {
 		led2.flip();
 	}
 	
-	accel.debug_print();
+	accel.debug_threshold();
 
 	wait(200);
 };
