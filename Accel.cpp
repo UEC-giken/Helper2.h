@@ -96,7 +96,7 @@ void Accel::addValue(float nx, float ny, float nz) {
   * d フレーム以上離れたタップを ダブルタップとする
   * e フレーム以上離れたタップは異なるタップとする  (ダブルタップとは検知しない)
   */
-  if (_diff[0] < 0.02 && 0.28 < _diff[15] && _diff[29] < 0.02) {
+  if (_diff[0] < _TH_A && _TH_B < _diff[15] && _diff[29] < _TH_C) {
     long int t_diff = millis() - _t_lasttap;
 
     if (debug) {
@@ -105,10 +105,10 @@ void Accel::addValue(float nx, float ny, float nz) {
       Serial.print("  ");
     }
 
-    if (100 < t_diff) {
+    if (_TH_D < t_diff) {
       _tap = true;
 
-      if (t_diff < 400) {
+      if (t_diff < _TH_E) {
         _doubletap = true;
       }
 

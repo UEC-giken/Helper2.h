@@ -30,7 +30,6 @@ LED led1(0);
 LED led2(1);
 
 void initialize() {
-  accel = Accel();
   AN_LED.begin();
 
 
