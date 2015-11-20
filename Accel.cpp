@@ -152,7 +152,7 @@ void Accel::updateFlags() {
   if (_last_size < 0.2) {
     _freefall = true;
   }
-  
+
   /**
   * 設定すべき値は 以下の8つです ([]内は単位)
   *
@@ -238,19 +238,20 @@ void Accel::debug_print_threshold() {
 }
 
 void Accel::debug_threshold() {
-  if (Serial.available() > 0){
-    uint8_t j = 1, length = Serial.available();
-    int8_t p[10] = {0};
-    
-    char string[length+10];
-    for (uint8_t i = 0; i < length; i++){
-      string[i] = Serial.read();
-      if ((string[i] < '0' || string[i] > '9') && string[i] != '.'){
-        string[i] = '\0';
-        if (string[i-1] == '\0'){
+  if (0 < Serial.available()) {
+    uint8_t j = 1, len = Serial.available();
+    int8_t p[5] = {};
+
+    char str[len+5];
+
+    for (uint8_t i = 0; i < len; i++) {
+      str[i] = Serial.read();
+      if ((str[i] < '0' || '9' < str[i]) && str[i] != '.') {
+        str[i] = '\0';
+        if (0 < i && str[i-1] == '\0') {
           j--;
         }
-        
+
         p[j] = i + 1;
         j++;
       }
