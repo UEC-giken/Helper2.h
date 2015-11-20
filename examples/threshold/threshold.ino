@@ -8,7 +8,7 @@ void setup() {
 	Serial.begin(9600);
 	initialize();
 
-	led1.off();
+	led1.on();
 	led2.color(0);
 	led2.off();
 	led2.color(0.5);

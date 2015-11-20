@@ -131,23 +131,24 @@ void Accel::addValue(float nx, float ny, float nz) {
 
 void Accel::debug_print(int i) {
   if (Serial.available() > 0){
-    uint8_t length = Serial.available();
-    uint8_t p[10] = {0, };
-    p[0] = 0;
+    uint8_t j = 1, length = Serial.available();
+    int8_t p[10] = {0};
     
     char string[length+10];
-    for (uint8_t i = 0, j = 0; i < length; i++){
-      string[j] = Serial.read();
-      if (string[j] < '0' || string[j] > '9' || string[j] != '.'){
+    for (uint8_t i = 0; i < length; i++){
+      string[i] = Serial.read();
+      if ((string[i] < '0' || string[i] > '9') && string[i] != '.'){
+        string[i] = '\0';
+        if (string[i-1] == '\0'){
+          j--;
+        }
+        
+        p[j] = i + 1;
         j++;
-        string[j] = '\0';
-        p[j-i] = j + 1;
       }
-      
-      j++;
     }
     
-    if (p[5] == 0){
+    if (j == 5){
       _TH_A = atof(&(string[p[0]]));
       _TH_B = atof(&(string[p[1]]));
       _TH_C = atof(&(string[p[2]]));
@@ -165,15 +166,6 @@ void Accel::debug_print(int i) {
     Serial.print(_TH_D);
     Serial.print(" _TH_E : ");
     Serial.println(_TH_E);
-    
-    Serial.println(length);
-    Serial.println(p[0]);
-    Serial.println(p[1]);
-    Serial.println(p[2]);
-    Serial.println(p[3]);
-    Serial.println(p[4]);
-    
-    // Serial.flush();
   }
 
   if (i != -1){
