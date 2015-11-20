@@ -84,4 +84,5 @@ class Accel {
     void shiftValue(float nx, float ny, float nz);
 
     void sendi2c(int8_t id, int8_t reg, int8_t data);
+    static float clamp(float val, float min, float max);
 };
