@@ -1,6 +1,5 @@
 #include <Helper2.h>
 #include <Wire.h>
-#include <TimerOne.h>
 
 void setup() {
 	initialize();
