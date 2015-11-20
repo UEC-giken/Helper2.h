@@ -242,13 +242,13 @@ void Accel::debug_threshold() {
         j++;
       }
     }
-    
-    if (j == 5){
-      _ThMaxAtFrameA = atof(&(string[p[0]]));
-      _ThMinAtFrameB = atof(&(string[p[1]]));
-      _ThMaxAtLatastFrame = atof(&(string[p[2]]));
-      _ThMaximumSingleTapSpace = atof(&(string[p[3]]));
-      _ThMaximumDoubleTapSpace = atof(&(string[p[4]]));
+
+    if (j == 5) {
+      _ThMaxAtFrameA = atof(&(str[p[0]]));
+      _ThMinAtFrameB = atof(&(str[p[1]]));
+      _ThMaxAtLatastFrame = atof(&(str[p[2]]));
+      _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
+      _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
     }
     
     Serial.print("_ThMaxAtFrameA : ");
