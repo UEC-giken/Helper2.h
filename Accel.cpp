@@ -212,9 +212,9 @@ void Accel::updateAccel() {
     sumz += rawz;
   }
 
-  int16_t divider_x = 245 * 10; // 1G で x が取る値
-  int16_t divider_y = 245 * 10; // 1G で y が取る値
-  int16_t divider_z = 225 * 10; // 1G で z が取る値
+  float divider_x = 245.0; // 1G で x が取る値
+  float divider_y = 245.0; // 1G で y が取る値
+  float divider_z = 225.0; // 1G で z が取る値
 
   divider_x *= count;
   divider_y *= count;
