@@ -76,7 +76,7 @@ void LED::randomcolor() {
   reflection();
 }
 
-void LED::colorcircle(float span) {
+void LED::stepcolor(float span) {
   color(hue_ + span);
 }
 
