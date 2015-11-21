@@ -12,13 +12,13 @@ install:
   - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
   
 script:
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/accel/accel.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/circle/circle.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/fade/fade.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/feeling/feeling.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/led/led.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/random/random.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/tap/tap.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/template/template.ino
-  - arduino --verify --board arduino:avr:pro:cpu=atmega328 $PWD/examples/threshold/threshold.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/accel/accel.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/circle/circle.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/fade/fade.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/feeling/feeling.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/led/led.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/random/random.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/tap/tap.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/template/template.ino
+  - arduino --verify --board arduino:avr:pro328 $PWD/examples/threshold/threshold.ino
 
