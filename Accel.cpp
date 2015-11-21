@@ -95,6 +95,8 @@ void Accel::updateAccel() {
     sumz += rawz;
   }
 
+
+  // 統合可能
   float divider_x = 245.0; // 1G で x が取る値
   float divider_y = 245.0; // 1G で y が取る値
   float divider_z = 225.0; // 1G で z が取る値
@@ -115,15 +117,13 @@ void Accel::updateAccel() {
 }
 
 void Accel::shiftValue(float nx, float ny, float nz) {
-  // 最初位置をシフト
-  _head_frame++;
-  if (_head_frame >= n_frames) {
-    _head_frame = 0;
-  }
+  // 位置をシフト
+  _head_frame = (_head_frame + 1) % n_frames;
+  _half_frame = (_half_frame + 1) % n_frames;
+  _last_frame = (_last_frame + 1) % n_frames;
 
   // 最後位置は"最初位置-1"
   // 最初位置が0の時は、最後位置は"全フレーム数-1"
-  _last_frame = (_head_frame - 1) % n_frames;
   _x[_last_frame] = nx;
   _y[_last_frame] = ny;
   _z[_last_frame] = nz;
@@ -143,10 +143,10 @@ void Accel::resetFlags() {
 
 void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame+n_frames-2) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame+n_frames-3) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame+n_frames-4) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame+n_frames-5) % n_frames])) {
+  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 2) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 3) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 4) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 5) % n_frames])) {
     _active = true;
   }
 
@@ -181,7 +181,7 @@ void Accel::updateFlags() {
   * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
   // (_head_frame+(int)(n_frames/2))%30   (最初+15) % 30がフレームの真ん中
-  if (_diff[_head_frame] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[(_head_frame+(int)(n_frames/2)) % n_frames] && _diff[_last_frame] < _ThMaxAtLatastFrame) {
+  if (_diff[_head_frame] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_half_frame] && _diff[_last_frame] < _ThMaxAtLatastFrame) {
     long int t_diff = millis() - _t_lasttap;
 
     if (debug) {
@@ -202,11 +202,11 @@ void Accel::updateFlags() {
 
     if (debug) {
       if (_doubletap) {
-        Serial.print("doubletapped, _diff[15] = ");
-        Serial.println(_diff[(_head_frame+(int)(n_frames/2)) % n_frames], 2);
+        Serial.print("doubletapped, _diff[_half_frame] = ");
+        Serial.println(_diff[_half_frame], 2);
       } else if (_tap) {
-        Serial.print("tapped, _diff[15] = ");
-        Serial.println(_diff[(_head_frame+(int)(n_frames/2)) % n_frames], 2);
+        Serial.print("tapped, _diff[_half_frame] = ");
+        Serial.println(_diff[_half_frame], 2);
       } else {
         Serial.println("ignored");
       }
