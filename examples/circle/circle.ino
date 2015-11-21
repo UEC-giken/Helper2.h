@@ -2,7 +2,6 @@
 #include <Helper2.h>
 
 void setup() {
-  Serial.begin(9600);
   initialize();
 
   led1.on();

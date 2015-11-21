@@ -84,21 +84,22 @@ bool LED::fadeIn(float span, float max, bool loop) {
   if (brightness_ + span < max || loop){
     brightness(brightness_ + span);
     status_ = true;
+    return true;
   }
 
-  return status_;
+  return false;
 }
 
 bool LED::fadeOut(float span, float min, bool loop) {
   if (brightness_ - span > min || loop){
     brightness(brightness_ - span);
     status_ = true;
+    return true;
   }
   else {
     status_ = false;
+    return false;
   }
-
-  return status_;
 }
 
 void LED::debugPrint(){

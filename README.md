@@ -120,6 +120,18 @@
 
 + ランダムな色を設定する
 
+#### bool fadeIn(float span = 0.02, float max = 0.5, bool loop = false)
+
++ `max`まで`span`だけ明るくなっていく
++ 明るさが`max`まで達すると`false`を返す
++ `loop`を`true`にすることで最高まで明るくなってから最高まで暗くなり…ということを繰り返す
+
+#### bool fadeOut(float span = 0.02, float min = 0.0, bool loop = false)
+
++ `min`まで`span`だけ暗くなっていく
++ 明るさが`min`まで達すると`false`を返す
++ `loop`を`true`にすることで最高まで暗くなってから最高まで明るくなり…ということを繰り返す
+
 #### void debugPrint()
 
 + デバッグ用
