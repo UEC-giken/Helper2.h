@@ -31,9 +31,9 @@ class Accel {
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
       _COUNT(20),
-      _last_size(0), _t_lasttap(0), debug(false),
       _active(false), _freefall(false), _tap(false), _doubletap(false),
-      _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1)
+      _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1),
+      _last_size(0), _t_lasttap(0), debug(false)
     {
       for (int i=0; i<30; i++) {
         _x[i] = 0;

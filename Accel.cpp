@@ -87,6 +87,7 @@ void Accel::updateAccel() {
   // count が大きくなるほどノイズに強くなる (が遅くなる)
   int sumx = 0, sumy = 0, sumz = 0;
   int rawx = 0, rawy = 0, rawz = 0;
+  
   // 水準器
   for(int i=0; i<_COUNT; i++) {
     adxl.readAccel(&rawx, &rawy, &rawz);
@@ -178,12 +179,6 @@ void Accel::updateFlags() {
   if (_diff[_head_frame] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_half_frame] && _diff[_last_frame] < _ThMaxAtLatastFrame) {
     long int t_diff = millis() - _t_lasttap;
 
-    if (debug) {
-      Serial.print("time diff: ");
-      Serial.print(t_diff);
-      Serial.print("  ");
-    }
-
     if (_ThMaximumSingleTapSpace < t_diff) {
       _tap = true;
 
@@ -195,6 +190,10 @@ void Accel::updateFlags() {
     }
 
     if (debug) {
+      Serial.print("time diff: ");
+      Serial.print(t_diff);
+      Serial.print("  ");
+      
       if (_doubletap) {
         Serial.print("doubletapped, _diff[_half_frame] = ");
         Serial.println(_diff[_half_frame], 2);
@@ -241,7 +240,6 @@ void Accel::debugInputThreshold() {
   if (0 < Serial.available()) {
     uint8_t j = 1, len = Serial.available();
     int8_t p[5] = {};
-
     char str[len+5];
 
     for (uint8_t i = 0; i < len; i++) {
