@@ -10,6 +10,6 @@ void setup() {
 void loop() {
   led1.randomcolor();
 
-  delay(500);
+  wait(500);
 }
 
