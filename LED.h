@@ -40,12 +40,12 @@ public:
   void stepcolor(float span = 0.005);
 
   // fade brightness
-  // return status
+  // return minまたはmaxに達したときにfalse
   bool fadeIn(float span = 0.02, float max = 0.5, bool loop = false);
   bool fadeOut(float span = 0.02, float min = 0.0, bool loop = false);
 
   // RGB と HLS の色情報をプリントする
-  void debug_print();
+  void debugPrint();
 
 private:
   // led status on = true, off = false

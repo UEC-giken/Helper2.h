@@ -2,7 +2,6 @@
 #include <Helper2.h>
 
 void setup() {
-  Serial.begin(9600);
   initialize();
 
   led1.on();
@@ -11,9 +10,9 @@ void setup() {
 
 void loop() {
   led1.stepcolor();
-  led1.debug_print();
+  led1.debugPrint();
   led2.stepcolor();
-  led2.debug_print();
+  led2.debugPrint();
 
   if (accel.tap()) {
     led1.randomcolor();
