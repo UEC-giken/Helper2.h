@@ -138,11 +138,26 @@ void Accel::resetFlags() {
 
 void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 1) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 2) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 3) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 4) % n_frames])) {
+  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 1) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 2) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 3) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 4) % n_frames])) {
     _active = true;
+    
+    if (debug){
+      Serial.print("DEBUG: _last_frame = ");
+      Serial.print((_last_frame - 1) % n_frames);
+      Serial.print("  ");
+      Serial.print(_diff[_last_frame]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 1) % n_frames]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 2) % n_frames]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 3) % n_frames]);
+      Serial.print(", ");
+      Serial.println(_diff[(_last_frame - 4) % n_frames]);
+    }    
   }
 
   if (_last_size < 0.2) {
