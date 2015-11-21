@@ -68,6 +68,17 @@
 + i: 0 - (n_frames - 1) (値が大きいほど新しい, n\_frames は Accel.h にて定義されている)
 + Default: n\_frames = 30, i = n_frame - 1
 
+#### void debug\_print\_threshold()
+
++ 内部で保持する しきい値 の値を Serial でプリントする
+
+#### void debug_threshold()
+
++ Serial モニタから数字を5つ入力することで しきい値 を変更できる
++ ThMaxAtFrameA, ThMinAtFrameB, ThMaxAtLatastFrame, ThMaximumSingleTapSpace, ThMaximumDoubleTapSpace の順に、区切り('0' - '9', '.' 以外ならなんでも良い)を入れて入力する
++ 一番左は詰めて数字を入力する必要がある
++ 確認用の出力として現在の しきい値 が一行で出力される
+
 ### LED
 
 インスタンスをグローバルで作成済み(led1, led2)
@@ -75,7 +86,7 @@
 #### bool on()
 
 + 設定した色で LED を点灯
-+ デフォルトhsl = (0.0, 0.7, 0.3)
++ Default: hsl = (0.0, 0.7, 0.3)
 
 #### bool off()
 

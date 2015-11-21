@@ -221,7 +221,52 @@ void Accel::debug_print(int i) {
   Serial.print(_z[i], 2);
   Serial.print(", ");
   Serial.print(_diff[i], 2);
-  Serial.print(")");
+  Serial.println(")");
+}
+
+void Accel::debug_print_threshold() {
+  Serial.print("_ThMaxAtFrameA: ");
+  Serial.print(_ThMaxAtFrameA);
+  Serial.print(", _ThMinAtFrameB: ");
+  Serial.print(_ThMinAtFrameB);
+  Serial.print(", _ThMaxAtLatastFrame: ");
+  Serial.print(_ThMaxAtLatastFrame);
+  Serial.print(", _ThMaximumSingleTapSpace: ");
+  Serial.print(_ThMaximumSingleTapSpace);
+  Serial.print(", _ThMaximumDoubleTapSpace: ");
+  Serial.println(_ThMaximumDoubleTapSpace);
+}
+
+void Accel::debug_threshold() {
+  if (0 < Serial.available()) {
+    uint8_t j = 1, len = Serial.available();
+    int8_t p[5] = {};
+
+    char str[len+5];
+
+    for (uint8_t i = 0; i < len; i++) {
+      str[i] = Serial.read();
+      if ((str[i] < '0' || '9' < str[i]) && str[i] != '.') {
+        str[i] = '\0';
+        if (0 < i && str[i-1] == '\0') {
+          j--;
+        }
+
+        p[j] = i + 1;
+        j++;
+      }
+    }
+
+    if (j == 5) {
+      _ThMaxAtFrameA = atof(&(str[p[0]]));
+      _ThMinAtFrameB = atof(&(str[p[1]]));
+      _ThMaxAtLatastFrame = atof(&(str[p[2]]));
+      _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
+      _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
+
+      debug_print_threshold();
+    }
+  }
 }
 
 // I2C通信

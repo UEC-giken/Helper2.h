@@ -24,7 +24,7 @@ class Accel {
 
     bool debug;
 
-    Accel(float a = 0.02, float b = 0.20, float c = 0.02, float d = 130, float e = 200) :
+    Accel(float a = 0.02, float b = 0.20, float c = 0.02, long int d = 130, long int e = 200) :
       _ThMaxAtFrameA(a),
       _ThMinAtFrameB(b),
       _ThMaxAtLatastFrame(c),
@@ -46,13 +46,15 @@ class Accel {
     void updateAccel();
 
     void debug_print(int i);
+    void debug_print_threshold();
+    void debug_threshold();
 
   private:
-    const float _ThMaxAtFrameA;
-    const float _ThMinAtFrameB;
-    const float _ThMaxAtLatastFrame;
-    const float _ThMaximumSingleTapSpace;
-    const float _ThMaximumDoubleTapSpace;
+    float _ThMaxAtFrameA;
+    float _ThMinAtFrameB;
+    float _ThMaxAtLatastFrame;
+    long int _ThMaximumSingleTapSpace;
+    long int _ThMaximumDoubleTapSpace;
 
     // 加速度センサ
     ADXL345 adxl;
