@@ -146,7 +146,7 @@ void Accel::updateFlags() {
     
     if (debug){
       Serial.print("DEBUG: _last_frame = ");
-      Serial.print((_last_frame - 1) % n_frames);
+      Serial.print(_last_frame);
       Serial.print("  ");
       Serial.print(_diff[_last_frame]);
       Serial.print(", ");

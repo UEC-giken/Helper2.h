@@ -4,6 +4,8 @@
 void setup() {
 	initialize();
 
+	accel.debug = true;
+
 	led1.brightness(0.3);
 	led2.brightness(0.3);
 	led1.on();
@@ -11,22 +13,18 @@ void setup() {
 }
 
 void loop() {
-	// if (accel.freefall()) {
-	// 	led1.stepcolor(0.05);
-	// 	led2.stepcolor(0.05);
-	// }
-	// else if (!accel.active()) {
-	// 	while (accel.active()) {
-	// 		led1.flip();
-	// 		led2.flip();
-    // 	}
-	// 	led1.on();
-	// 	led2.on();
-	// }
-	
-	if (accel.active()){
+	if (accel.freefall()) {
 		led1.stepcolor(0.05);
 		led2.stepcolor(0.05);
+	}
+	else if (accel.active()) {
+		while (accel.active()) {
+			led1.flip();
+			led2.flip();
+			wait(200);
+    	}
+		led1.on();
+		led2.on();
 	}
 	
 	if (accel.doubletap()) {
