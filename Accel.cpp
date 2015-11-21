@@ -85,25 +85,19 @@ void Accel::init() {
 
 void Accel::updateAccel() {
   // count が大きくなるほどノイズに強くなる (が遅くなる)
-  int count = 20, sumx = 0, sumy = 0, sumz = 0;
+  int sumx = 0, sumy = 0, sumz = 0;
   int rawx = 0, rawy = 0, rawz = 0;
   // 水準器
-  for(int i=0; i<count; i++) {
+  for(int i=0; i<_COUNT; i++) {
     adxl.readAccel(&rawx, &rawy, &rawz);
     sumx += rawx;
     sumy += rawy;
     sumz += rawz;
   }
 
-
-  // 統合可能
-  float divider_x = 245.0; // 1G で x が取る値
-  float divider_y = 245.0; // 1G で y が取る値
-  float divider_z = 225.0; // 1G で z が取る値
-
-  divider_x *= count;
-  divider_y *= count;
-  divider_z *= count;
+  float divider_x = 245.0 * _COUNT; // 1G で x が取る値
+  float divider_y = 245.0 * _COUNT; // 1G で y が取る値
+  float divider_z = 225.0 * _COUNT; // 1G で z が取る値
 
   // sum(x, y, z) は -10240 - 10240 をとる
   // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める

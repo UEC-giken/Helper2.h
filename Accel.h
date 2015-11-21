@@ -30,6 +30,7 @@ class Accel {
       _ThMaxAtLatastFrame(c),
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
+      _COUNT(20),
       _last_size(0), _t_lasttap(0), debug(false),
       _active(false), _freefall(false), _tap(false), _doubletap(false),
       _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1)
@@ -59,6 +60,8 @@ class Accel {
 
     // 加速度センサ
     ADXL345 adxl;
+    
+    const int _COUNT;
 
     bool _active;
     bool _freefall;
@@ -74,11 +77,10 @@ class Accel {
     float _y[n_frames];
     float _z[n_frames];
     float _diff[n_frames]; // 累積誤差
-    float _last_size; // 前フレームの 過速度の大きさの二乗
-
-    float _t_lasttap;
-
     int _millis[n_frames]; // デバッグ用
+
+    float _last_size; // 前フレームの 過速度の大きさの二乗
+    float _t_lasttap;
 
     Accel(const Accel &other) :
       _ThMaxAtFrameA(other._ThMaxAtFrameA),
