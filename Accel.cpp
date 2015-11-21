@@ -13,15 +13,15 @@ float Accel::clamp(float val, float min, float max) {
 }
 
 float Accel::x() {
-  return _x[n_frames-1];
+  return _x[_last_frame];
 };
 
 float Accel::y() {
-  return _y[n_frames-1];
+  return _y[_last_frame];
 };
 
 float Accel::z() {
-  return _z[n_frames-1];
+  return _z[_last_frame];
 };
 
 
@@ -85,23 +85,20 @@ void Accel::init() {
 
 void Accel::updateAccel() {
   // count が大きくなるほどノイズに強くなる (が遅くなる)
-  int count = 20, sumx = 0, sumy = 0, sumz = 0;
+  int sumx = 0, sumy = 0, sumz = 0;
   int rawx = 0, rawy = 0, rawz = 0;
+  
   // 水準器
-  for(int i=0; i<count; i++) {
+  for(int i=0; i<_COUNT; i++) {
     adxl.readAccel(&rawx, &rawy, &rawz);
     sumx += rawx;
     sumy += rawy;
     sumz += rawz;
   }
 
-  float divider_x = 245.0; // 1G で x が取る値
-  float divider_y = 245.0; // 1G で y が取る値
-  float divider_z = 225.0; // 1G で z が取る値
-
-  divider_x *= count;
-  divider_y *= count;
-  divider_z *= count;
+  float divider_x = 245.0 * _COUNT; // 1G で x が取る値
+  float divider_y = 245.0 * _COUNT; // 1G で y が取る値
+  float divider_z = 225.0 * _COUNT; // 1G で z が取る値
 
   // sum(x, y, z) は -10240 - 10240 をとる
   // sum_(x, y, z) の値を divider_(x, y, z) で割り、正規化して -1.0 - 1.0 に縮める
@@ -115,21 +112,20 @@ void Accel::updateAccel() {
 }
 
 void Accel::shiftValue(float nx, float ny, float nz) {
-  for (int i=0; i<n_frames-1; i++) {
-      _x[i] = _x[i+1];
-      _y[i] = _y[i+1];
-      _z[i] = _z[i+1];
-      _diff[i] = _diff[i+1];
-      _millis[i] = _millis[i+1];
-  }
+  // 位置をシフト
+  _head_frame = (_head_frame + 1) % n_frames;
+  _half_frame = (_half_frame + 1) % n_frames;
+  _last_frame = (_last_frame + 1) % n_frames;
 
-  _x[n_frames-1] = nx;
-  _y[n_frames-1] = ny;
-  _z[n_frames-1] = nz;
-  _millis[n_frames-1] = millis();
+  // 最後位置は"最初位置-1"
+  // 最初位置が0の時は、最後位置は"全フレーム数-1"
+  _x[_last_frame] = nx;
+  _y[_last_frame] = ny;
+  _z[_last_frame] = nz;
+  _millis[_last_frame] = millis();
 
   float new_size = nx*nx + ny*ny + nz*nz;
-  _diff[n_frames-1] = abs(new_size - _last_size);
+  _diff[_last_frame] = abs(new_size - _last_size);
   _last_size = new_size;
 }
 
@@ -142,11 +138,26 @@ void Accel::resetFlags() {
 
 void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[n_frames-1] - _diff[28]) ||
-      0.1 < abs(_diff[n_frames-1] - _diff[27]) ||
-      0.1 < abs(_diff[n_frames-1] - _diff[26]) ||
-      0.1 < abs(_diff[n_frames-1] - _diff[25])) {
+  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 1) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 2) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 3) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 4) % n_frames])) {
     _active = true;
+    
+    if (debug){
+      Serial.print("DEBUG: _last_frame = ");
+      Serial.print(_last_frame);
+      Serial.print("  ");
+      Serial.print(_diff[_last_frame]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 1) % n_frames]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 2) % n_frames]);
+      Serial.print(", ");
+      Serial.print(_diff[(_last_frame - 3) % n_frames]);
+      Serial.print(", ");
+      Serial.println(_diff[(_last_frame - 4) % n_frames]);
+    }    
   }
 
   if (_last_size < 0.2) {
@@ -179,14 +190,9 @@ void Accel::updateFlags() {
   * - ThMaximumSingleTapSpace フレーム以上離れたタップを ダブルタップとする
   * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
-  if (_diff[0] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[15] && _diff[n_frames-1] < _ThMaxAtLatastFrame) {
+  // (_head_frame+(int)(n_frames/2))%30   (最初+15) % 30がフレームの真ん中
+  if (_diff[_head_frame] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_half_frame] && _diff[_last_frame] < _ThMaxAtLatastFrame) {
     long int t_diff = millis() - _t_lasttap;
-
-    if (debug) {
-      Serial.print("time diff: ");
-      Serial.print(t_diff);
-      Serial.print("  ");
-    }
 
     if (_ThMaximumSingleTapSpace < t_diff) {
       _tap = true;
@@ -199,12 +205,16 @@ void Accel::updateFlags() {
     }
 
     if (debug) {
+      Serial.print("time diff: ");
+      Serial.print(t_diff);
+      Serial.print("  ");
+      
       if (_doubletap) {
-        Serial.print("doubletapped, _diff[15] = ");
-        Serial.println(_diff[15], 2);
+        Serial.print("doubletapped, _diff[_half_frame] = ");
+        Serial.println(_diff[_half_frame], 2);
       } else if (_tap) {
-        Serial.print("tapped, _diff[15] = ");
-        Serial.println(_diff[15], 2);
+        Serial.print("tapped, _diff[_half_frame] = ");
+        Serial.println(_diff[_half_frame], 2);
       } else {
         Serial.println("ignored");
       }
@@ -213,6 +223,10 @@ void Accel::updateFlags() {
 }
 
 void Accel::debugPrint(int i) {
+  if (i = -1){
+    i = _last_frame;
+  }
+  
   Serial.print("(");
   Serial.print(_x[i], 2);
   Serial.print(", ");
@@ -241,7 +255,6 @@ void Accel::debugInputThreshold() {
   if (0 < Serial.available()) {
     uint8_t j = 1, len = Serial.available();
     int8_t p[5] = {};
-
     char str[len+5];
 
     for (uint8_t i = 0; i < len; i++) {

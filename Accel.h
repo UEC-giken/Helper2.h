@@ -30,8 +30,10 @@ class Accel {
       _ThMaxAtLatastFrame(c),
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
-      _last_size(0), _t_lasttap(0), debug(false),
-      _active(false), _freefall(false), _tap(false), _doubletap(false)
+      _COUNT(20),
+      _active(false), _freefall(false), _tap(false), _doubletap(false),
+      _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1),
+      _last_size(0), _t_lasttap(0), debug(false)
     {
       for (int i=0; i<30; i++) {
         _x[i] = 0;
@@ -45,7 +47,7 @@ class Accel {
     void init();
     void updateAccel();
 
-    void debugPrint(int i);
+    void debugPrint(int i = -1);
     void debugPrintThreshold();
     void debugInputThreshold();
 
@@ -58,28 +60,35 @@ class Accel {
 
     // 加速度センサ
     ADXL345 adxl;
+    
+    const int _COUNT;
 
     bool _active;
     bool _freefall;
     bool _tap;
     bool _doubletap;
 
+    // 累積データ配列のシフトされた最初・最後の位置
+    int _head_frame;
+    int _half_frame;
+    int _last_frame;
+    
     float _x[n_frames];
     float _y[n_frames];
     float _z[n_frames];
     float _diff[n_frames]; // 累積誤差
-    float _last_size; // 前フレームの 過速度の大きさの二乗
-
-    float _t_lasttap;
-
     int _millis[n_frames]; // デバッグ用
+
+    float _last_size; // 前フレームの 過速度の大きさの二乗
+    float _t_lasttap;
 
     Accel(const Accel &other) :
       _ThMaxAtFrameA(other._ThMaxAtFrameA),
       _ThMinAtFrameB(other._ThMinAtFrameB),
       _ThMaxAtLatastFrame(other._ThMaxAtLatastFrame),
       _ThMaximumSingleTapSpace(other._ThMaximumSingleTapSpace),
-      _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace)
+      _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace),
+      _COUNT(20)
     {}
 
     // 新しい加速度の値を追加し、最も古い加速度の値を削除します。

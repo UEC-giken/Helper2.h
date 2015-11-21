@@ -4,6 +4,8 @@
 void setup() {
 	initialize();
 
+	accel.debug = true;
+
 	led1.brightness(0.3);
 	led2.brightness(0.3);
 	led1.on();
@@ -16,10 +18,11 @@ void loop() {
 		led2.stepcolor(0.05);
 	}
 	else if (accel.active()) {
-		led1.flip();
-		led2.flip();
-	}
-	else {
+		while (accel.active()) {
+			led1.flip();
+			led2.flip();
+			wait(200);
+    	}
 		led1.on();
 		led2.on();
 	}
@@ -34,6 +37,8 @@ void loop() {
 			wait(30);
 		}
 	}
+	
+	accel.debugPrint(1);
 
 	wait(200);
 };
