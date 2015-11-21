@@ -87,7 +87,8 @@ class Accel {
       _ThMinAtFrameB(other._ThMinAtFrameB),
       _ThMaxAtLatastFrame(other._ThMaxAtLatastFrame),
       _ThMaximumSingleTapSpace(other._ThMaximumSingleTapSpace),
-      _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace)
+      _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace),
+      _COUNT(20)
     {}
 
     // 新しい加速度の値を追加し、最も古い加速度の値を削除します。
