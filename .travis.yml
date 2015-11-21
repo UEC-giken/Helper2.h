@@ -6,9 +6,6 @@ install:
   - python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
 
 sudo: false
-cache:
-  directories:
-    - "~/.platformio"
 
 env:
   - PLATFORMIO_CI_SRC=examples/accel/accel.ino
@@ -22,4 +19,4 @@ env:
   - PLATFORMIO_CI_SRC=examples/threshold/threshold.ino
 
 script:
-  - platformio ci --lib="." --board=pro8MHzatmega328
+  - platformio ci --lib="." --board=pro8MHzatmega328 --board=uno
