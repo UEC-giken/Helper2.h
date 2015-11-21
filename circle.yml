@@ -1,0 +1,20 @@
+machine:
+  environment:
+    PLATFORMIO_CI_SRC: examples/accel/accel.ino
+    PLATFORMIO_CI_SRC: examples/circle/circle.ino
+    PLATFORMIO_CI_SRC: examples/fade/fade.ino
+    PLATFORMIO_CI_SRC: examples/feeling/feeling.ino
+    PLATFORMIO_CI_SRC: examples/led/led.ino
+    PLATFORMIO_CI_SRC: examples/random/random.ino
+    PLATFORMIO_CI_SRC: examples/tap/tap.ino
+    PLATFORMIO_CI_SRC: examples/template/template.ino
+    PLATFORMIO_CI_SRC: examples/threshold/threshold.ino
+
+dependencies:
+  pre:
+    - sudo apt-get install python2.7-dev
+    - sudo python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
+
+test:
+  override:
+    - platformio ci --lib="." --board=uno --board=pro8MHzatmega328
