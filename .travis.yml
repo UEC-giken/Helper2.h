@@ -7,8 +7,8 @@ install:
 
 sudo: false
 cache:
-    directories:
-        - "~/.platformio"
+  directories:
+    - "~/.platformio"
 
 env:
   - PLATFORMIO_CI_SRC=examples/accel/accel.ino
@@ -21,7 +21,5 @@ env:
   - PLATFORMIO_CI_SRC=examples/template/template.ino
   - PLATFORMIO_CI_SRC=examples/threshold/threshold.ino
 
-
-
 script:
-  - platformio ci --lib="./" --board=pro8MHzatmega328
+  - platformio ci --lib="." --board=pro8MHzatmega328
