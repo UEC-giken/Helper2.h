@@ -1,3 +1,8 @@
+#FUNCTIONS COLOR 			#D35400 - ORANGE			KEYWORD1
+#FUNCTIONS COLOR			#D35400 - ORANGE			KEYWORD2
+#STRUCTURE COLORS 			#5E6D03 - GREEN			KEYWORD3
+#VARIABLES COLOR 				#00979C - BLUE				LITERAL2
+
 #######################################
 # Syntax Coloring Map For Helper2
 ####################################### 
@@ -59,9 +64,9 @@ sendi2c	KEYWORD2
 # Instance
 #######################################
 
-accel	KEYWORD3
-led1	KEYWORD3
-led2	KEYWORD3
+accel	LITERAL1
+led1	LITERAL1
+led2	LITERAL1
 
 
 #######################################
