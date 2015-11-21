@@ -10,6 +10,7 @@ LED led1(0);
 LED led2(1);
 
 void initialize() {
+  Serial.begin(9600);
   AN_LED.begin();
   accel.init();
 
