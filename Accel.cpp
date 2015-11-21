@@ -115,21 +115,22 @@ void Accel::updateAccel() {
 }
 
 void Accel::shiftValue(float nx, float ny, float nz) {
-  for (int i=0; i<n_frames-1; i++) {
-      _x[i] = _x[i+1];
-      _y[i] = _y[i+1];
-      _z[i] = _z[i+1];
-      _diff[i] = _diff[i+1];
-      _millis[i] = _millis[i+1];
+  // 最初位置をシフト
+  _head_frame++;
+  if (_head_frame >= 30) {
+    _head_frame = 0;
   }
 
-  _x[n_frames-1] = nx;
-  _y[n_frames-1] = ny;
-  _z[n_frames-1] = nz;
-  _millis[n_frames-1] = millis();
+  // 最後位置は"最初位置-1"
+  // 最初位置が0の時は、最後位置は"全フレーム数-1"
+  _last_frame = (_head_frame-1 != 0) ? _head_frame-1 : n_frames-1;
+  _x[_last_frame] = nx;
+  _y[_last_frame] = ny;
+  _z[_last_frame] = nz;
+  _millis[_last_frame] = millis();
 
   float new_size = nx*nx + ny*ny + nz*nz;
-  _diff[n_frames-1] = abs(new_size - _last_size);
+  _diff[_last_frame] = abs(new_size - _last_size);
   _last_size = new_size;
 }
 

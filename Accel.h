@@ -33,6 +33,8 @@ class Accel {
       _last_size(0), _t_lasttap(0), debug(false),
       _active(false), _freefall(false), _tap(false), _doubletap(false)
     {
+      _head_frame = 0;
+      _last_frame = 0;
       for (int i=0; i<30; i++) {
         _x[i] = 0;
         _y[i] = 0;
@@ -64,6 +66,7 @@ class Accel {
     bool _tap;
     bool _doubletap;
 
+    int _head_frame, _last_frame; // 累積データ配列のシフトされた最初・最後の位置
     float _x[n_frames];
     float _y[n_frames];
     float _z[n_frames];
