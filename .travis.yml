@@ -2,21 +2,24 @@ language: python
 python:
   - "2.7"
 
-install:
-  - python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
-
 sudo: false
+cache:
+  directories:
+    - "~/.platformio"
 
 env:
-  - PLATFORMIO_CI_SRC=examples/accel/accel.ino
-  - PLATFORMIO_CI_SRC=examples/circle/circle.ino
-  - PLATFORMIO_CI_SRC=examples/fade/fade.ino
-  - PLATFORMIO_CI_SRC=examples/feeling/feeling.ino
-  - PLATFORMIO_CI_SRC=examples/led/led.ino
-  - PLATFORMIO_CI_SRC=examples/random/random.ino
-  - PLATFORMIO_CI_SRC=examples/tap/tap.ino
-  - PLATFORMIO_CI_SRC=examples/template/template.ino
-  - PLATFORMIO_CI_SRC=examples/threshold/threshold.ino
+  - PLATFORMIO_CI_SRC=examples/accel
+  - PLATFORMIO_CI_SRC=examples/circle
+  - PLATFORMIO_CI_SRC=examples/fade
+  - PLATFORMIO_CI_SRC=examples/feeling
+  - PLATFORMIO_CI_SRC=examples/led
+  - PLATFORMIO_CI_SRC=examples/random
+  - PLATFORMIO_CI_SRC=examples/tap
+  - PLATFORMIO_CI_SRC=examples/template
+  - PLATFORMIO_CI_SRC=examples/threshold
+
+install:
+  - pip install -U platformio
 
 script:
   - platformio ci --lib="." --board=pro8MHzatmega328 --board=uno
