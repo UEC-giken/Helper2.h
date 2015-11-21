@@ -40,7 +40,7 @@ public:
   void stepcolor(float span = 0.005);
 
   // RGB と HLS の色情報をプリントする
-  void debug_print();
+  void debugPrint();
 
 private:
   // led status on = true, off = false

@@ -35,7 +35,7 @@ randomcolor	KEYWORD2
 colorcircle	KEYWORD2
 fadeIn	KEYWORD2
 fadeOut	KEYWORD2
-debug_print	KEYWORD2
+debugPrint	KEYWORD2
 SetHLSFromRGB	KEYWORD2
 SetRGBFromHLS	KEYWORD2
 
@@ -54,9 +54,9 @@ updateAccel	KEYWORD2
 shiftValue	KEYWORD2
 resetFlags	KEYWORD2
 updateFlags	KEYWORD2
-debug_print	KEYWORD2
-debug_print_threshold	KEYWORD2
-debug_threshold	KEYWORD2
+debugPrint	KEYWORD2
+debugPrintThreshold	KEYWORD2
+debugInputThreshold	KEYWORD2
 sendi2c	KEYWORD2
 
 
