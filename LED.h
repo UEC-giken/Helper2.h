@@ -45,7 +45,7 @@ public:
   bool fadeOut(float span = 0.02, float min = 0.0, bool loop = false);
 
   // RGB と HLS の色情報をプリントする
-  void debug_print();
+  void debugPrint();
 
 private:
   // led status on = true, off = false

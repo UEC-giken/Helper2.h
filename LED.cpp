@@ -102,7 +102,7 @@ bool LED::fadeOut(float span, float min, bool loop) {
   }
 }
 
-void LED::debug_print(){
+void LED::debugPrint(){
   Serial.print("led");
   Serial.print(led_num_);
 

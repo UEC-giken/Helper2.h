@@ -62,7 +62,7 @@
 + 有効化すると、Serial から タップ等の検出情報をプリントする
 + Default: false
 
-#### void debug_print(int i)
+#### void debugPrint(int i)
 
 + 内部で保持する x, y, z 軸の値を Serial でプリントする
 + i: 0 - (n_frames - 1) (値が大きいほど新しい, n\_frames は Accel.h にて定義されている)
@@ -72,7 +72,7 @@
 
 + 内部で保持する しきい値 の値を Serial でプリントする
 
-#### void debug_threshold()
+#### void debugInputThreshold()
 
 + Serial モニタから数字を5つ入力することで しきい値 を変更できる
 + ThMaxAtFrameA, ThMinAtFrameB, ThMaxAtLatastFrame, ThMaximumSingleTapSpace, ThMaximumDoubleTapSpace の順に、区切り('0' - '9', '.' 以外ならなんでも良い)を入れて入力する
@@ -132,7 +132,7 @@
 + 明るさが`min`まで達すると`false`を返す
 + `loop`を`true`にすることで最高まで暗くなってから最高まで明るくなり…ということを繰り返す
 
-#### void debug_print()
+#### void debugPrint()
 
 + デバッグ用
 + Serial にて RGB と HLS の値を 出力する
