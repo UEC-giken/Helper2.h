@@ -6,12 +6,12 @@ install:
   - python -c "$(curl -fsSL https://raw.githubusercontent.com/platformio/platformio/master/scripts/get-platformio.py)"
 
 script:
-	- platformio ci examples/accel/accel.ino --board=pro8MHzatmega328
-	- platformio ci examples/circle/circle.ino --board=pro8MHzatmega328
-	- platformio ci examples/fade/fade.ino --board=pro8MHzatmega328
-	- platformio ci examples/feeling/feeling.ino --board=pro8MHzatmega328
-	- platformio ci examples/led/led.ino --board=pro8MHzatmega328
-	- platformio ci examples/random/random.ino --board=pro8MHzatmega328
-	- platformio ci examples/tap/tap.ino --board=pro8MHzatmega328
-	- platformio ci examples/template/template.ino --board=pro8MHzatmega328
-	- platformio ci examples/threshold/threshold.ino --board=pro8MHzatmega328
+  - platformio ci examples/accel/accel.ino --board=pro8MHzatmega328
+  - platformio ci examples/circle/circle.ino --board=pro8MHzatmega328
+  - platformio ci examples/fade/fade.ino --board=pro8MHzatmega328
+  - platformio ci examples/feeling/feeling.ino --board=pro8MHzatmega328
+  - platformio ci examples/led/led.ino --board=pro8MHzatmega328
+  - platformio ci examples/random/random.ino --board=pro8MHzatmega328
+  - platformio ci examples/tap/tap.ino --board=pro8MHzatmega328
+  - platformio ci examples/template/template.ino --board=pro8MHzatmega328
+  - platformio ci examples/threshold/threshold.ino --board=pro8MHzatmega328
