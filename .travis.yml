@@ -24,4 +24,4 @@ env:
 
 
 script:
-  - platformio ci --lib="../" --board=pro8MHzatmega328
+  - platformio ci --lib="./" --board=pro8MHzatmega328
