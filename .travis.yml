@@ -1,26 +1,17 @@
-language: python
-python:
-    - "2.7"
-
-# Cache PlatformIO packages using Travis CI container-based infrastructure
-sudo: false
-cache:
-    directories:
-        - "~/.platformio"
-
-env:
-    - PLATFORMIO_CI_SRC=examples/accel
-    - PLATFORMIO_CI_SRC=examples/circle
-    - PLATFORMIO_CI_SRC=examples/fade
-    - PLATFORMIO_CI_SRC=examples/feeling
-    - PLATFORMIO_CI_SRC=examples/led
-    - PLATFORMIO_CI_SRC=examples/random
-    - PLATFORMIO_CI_SRC=examples/tap
-    - PLATFORMIO_CI_SRC=examples/template
-    - PLATFORMIO_CI_SRC=examples/threshold
-
+language: c++
+before_install:
+  - "/sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16"
+  - sleep 3
+  - export DISPLAY=:1.0
+  - wget http://downloads.arduino.cc/arduino-1.6.5-linux64.tar.xz
+  - tar xf arduino-1.6.5-linux64.tar.xz
+  - sudo mv arduino-1.6.5 /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  
 install:
-    - pip install -U platformio
-
+  - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
+  - arduino --install-library "UEC-VB Helper2.h"
+  
 script:
-    - platformio ci --lib="." --board=pro8MHzatmega328
+  - arduino --verify --board arduino:avr:uno $PWD/examples/tap/tap.ino
+
