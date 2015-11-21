@@ -1,0 +1,70 @@
+#######################################
+# Syntax Coloring Map For Helper2
+####################################### 
+# Class
+#######################################
+
+Helper2	KEYWORD1  
+Accel	KEYWORD1
+LED	KEYWORD1
+
+
+#######################################
+# Methods and Functions 
+#######################################	
+
+wait	KEYWORD2
+initialize	KEYWORD2
+
+# LED Methods
+
+on	KEYWORD2
+off	KEYWORD2
+flip	KEYWORD2
+reflection	KEYWORD2
+getStatus	KEYWORD2
+color	KEYWORD2
+brightness	KEYWORD2
+saturation	KEYWORD2
+randomcolor	KEYWORD2
+colorcircle	KEYWORD2
+fadeIn	KEYWORD2
+fadeOut	KEYWORD2
+debug_print	KEYWORD2
+SetHLSFromRGB	KEYWORD2
+SetRGBFromHLS	KEYWORD2
+
+# Accel Methods
+
+clamp	KEYWORD2
+x	KEYWORD2
+y	KEYWORD2
+z	KEYWORD2
+active	KEYWORD2
+freefall	KEYWORD2
+tap	KEYWORD2
+doubletap	KEYWORD2
+init	KEYWORD2
+updateAccel	KEYWORD2
+shiftValue	KEYWORD2
+resetFlags	KEYWORD2
+updateFlags	KEYWORD2
+debug_print	KEYWORD2
+debug_print_threshold	KEYWORD2
+debug_threshold	KEYWORD2
+sendi2c	KEYWORD2
+
+
+#######################################
+# Instance
+#######################################
+
+accel	KEYWORD3
+led1	KEYWORD3
+led2	KEYWORD3
+
+
+#######################################
+# Constants
+#######################################
+ 
