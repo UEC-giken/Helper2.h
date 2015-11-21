@@ -1,4 +1,5 @@
 # Helper2.h
+[![Build Status](https://travis-ci.org/UEC-VBSeminar/Helper2.h.svg?branch=master)](https://travis-ci.org/UEC-VBSeminar/Helper2.h)
 
 ## 環境
 
