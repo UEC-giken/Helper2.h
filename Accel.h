@@ -31,7 +31,7 @@ class Accel {
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
       _last_size(0), _t_lasttap(0), debug(false),
-      _active(false), _freefall(false), _tap(false), _doubletap(false)
+      _active(false), _freefall(false), _tap(false), _doubletap(false), _head_frame(0), _last_frame(0)
     {
       _head_frame = 0;
       _last_frame = 0;
