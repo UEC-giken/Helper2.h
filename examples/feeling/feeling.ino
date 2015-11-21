@@ -11,17 +11,22 @@ void setup() {
 }
 
 void loop() {
-	if (accel.freefall()) {
+	// if (accel.freefall()) {
+	// 	led1.stepcolor(0.05);
+	// 	led2.stepcolor(0.05);
+	// }
+	// else if (!accel.active()) {
+	// 	while (accel.active()) {
+	// 		led1.flip();
+	// 		led2.flip();
+    // 	}
+	// 	led1.on();
+	// 	led2.on();
+	// }
+	
+	if (accel.active()){
 		led1.stepcolor(0.05);
 		led2.stepcolor(0.05);
-	}
-	else if (accel.active()) {
-		led1.flip();
-		led2.flip();
-	}
-	else {
-		led1.on();
-		led2.on();
 	}
 	
 	if (accel.doubletap()) {
@@ -34,6 +39,8 @@ void loop() {
 			wait(30);
 		}
 	}
+	
+	accel.debugPrint(1);
 
 	wait(200);
 };

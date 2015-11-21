@@ -137,10 +137,10 @@ void Accel::resetFlags() {
 
 void Accel::updateFlags() {
   // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 2) % n_frames]) ||
+  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 1) % n_frames]) ||
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 2) % n_frames]) ||
       0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 3) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 4) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 5) % n_frames])) {
+      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame - 4) % n_frames])) {
     _active = true;
   }
 
