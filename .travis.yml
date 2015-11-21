@@ -22,4 +22,4 @@ install:
   - pip install -U platformio
 
 script:
-  - platformio ci --lib="." --board=pro8MHzatmega328 --board=uno
+  - platformio ci --lib="." --board=pro8MHzatmega328
