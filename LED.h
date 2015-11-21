@@ -37,7 +37,7 @@ public:
 
   // led の色をランダムに点灯する
   void randomcolor();
-  void colorcircle(float span = 0.005);
+  void stepcolor(float span = 0.005);
 
   // RGB と HLS の色情報をプリントする
   void debug_print();

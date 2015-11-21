@@ -10,9 +10,9 @@ void setup() {
 }
 
 void loop() {
-  led1.colorcircle();
+  led1.stepcolor();
   led1.debug_print();
-  led2.colorcircle();
+  led2.stepcolor();
   led2.debug_print();
 
   if (accel.tap()) {
