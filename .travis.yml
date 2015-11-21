@@ -10,7 +10,6 @@ before_install:
   
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
-  - arduino --install-library "UEC-VB Helper2.h"
   
 script:
   - arduino --verify --board arduino:avr:uno $PWD/examples/tap/tap.ino
