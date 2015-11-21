@@ -4,7 +4,7 @@
 void setup() {
 	Serial.begin(9600);
 	initialize();
-	accel.debug_print_threshold();
+	accel.debugPrintThreshold();
 
 	led1.on();
 	led2.color(0);
@@ -21,7 +21,7 @@ void loop() {
 		led2.flip();
 	}
 
-	accel.debug_threshold();
+	accel.debugInputThreshold();
 
 	wait(200);
 };

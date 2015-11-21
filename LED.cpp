@@ -80,7 +80,7 @@ void LED::stepcolor(float span) {
   color(hue_ + span);
 }
 
-void LED::debug_print(){
+void LED::debugPrint(){
   Serial.print("led");
   Serial.print(led_num_);
 

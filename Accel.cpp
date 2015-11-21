@@ -212,7 +212,7 @@ void Accel::updateFlags() {
   }
 }
 
-void Accel::debug_print(int i) {
+void Accel::debugPrint(int i) {
   Serial.print("(");
   Serial.print(_x[i], 2);
   Serial.print(", ");
@@ -224,7 +224,7 @@ void Accel::debug_print(int i) {
   Serial.println(")");
 }
 
-void Accel::debug_print_threshold() {
+void Accel::debugPrintThreshold() {
   Serial.print("_ThMaxAtFrameA: ");
   Serial.print(_ThMaxAtFrameA);
   Serial.print(", _ThMinAtFrameB: ");
@@ -237,7 +237,7 @@ void Accel::debug_print_threshold() {
   Serial.println(_ThMaximumDoubleTapSpace);
 }
 
-void Accel::debug_threshold() {
+void Accel::debugInputThreshold() {
   if (0 < Serial.available()) {
     uint8_t j = 1, len = Serial.available();
     int8_t p[5] = {};
@@ -264,7 +264,7 @@ void Accel::debug_threshold() {
       _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
       _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
 
-      debug_print_threshold();
+      debugPrintThreshold();
     }
   }
 }
