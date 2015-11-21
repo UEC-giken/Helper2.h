@@ -38,11 +38,11 @@ public:
   // led の色をランダムに点灯する
   void randomcolor();
   void colorcircle(float span = 0.005);
-  
+
   // fade brightness
   // return status
-  bool fadeIn(bool loop = false, float span = 0.02);
-  bool fadeOut(bool loop = false, float span = 0.02);
+  bool fadeIn(float span = 0.02, float max = 0.5, bool loop = false);
+  bool fadeOut(float span = 0.02, float min = 0.0, bool loop = false);
 
   // RGB と HLS の色情報をプリントする
   void debug_print();
@@ -58,7 +58,7 @@ private:
   uint8_t red_, green_, blue_;
   float saturation_, brightness_, hue_;
 
-  LED(const LED& origin) : 
+  LED(const LED& origin) :
     led_num_(origin.led_num_)
   {}
 

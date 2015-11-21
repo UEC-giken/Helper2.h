@@ -57,7 +57,7 @@ void LED::color(uint8_t red, uint8_t green, uint8_t blue) {
   reflection();
 }
 
-void LED::brightness(float brightness) {  
+void LED::brightness(float brightness) {
   brightness_ = fmod(brightness, 1.0);
 
   SetRGBFromHLS();
@@ -80,24 +80,24 @@ void LED::colorcircle(float span) {
   color(hue_ + span);
 }
 
-bool LED::fadeIn(bool loop, float span){
-  if (brightness_ + span < 1.0 || loop){
+bool LED::fadeIn(float span, float max, bool loop) {
+  if (brightness_ + span < max || loop){
     brightness(brightness_ + span);
     status_ = true;
   }
-  
+
   return status_;
 }
 
-bool LED::fadeOut(bool loop, float span){
-  if (brightness_ - span > 0.0 || loop){
+bool LED::fadeOut(float span, float min, bool loop) {
+  if (brightness_ - span > min || loop){
     brightness(brightness_ - span);
     status_ = true;
   }
   else {
     status_ = false;
   }
-  
+
   return status_;
 }
 
