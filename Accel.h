@@ -47,7 +47,7 @@ class Accel {
     void init();
     void updateAccel();
 
-    void debugPrint(int i);
+    void debugPrint(int i = -1);
     void debugPrintThreshold();
     void debugInputThreshold();
 

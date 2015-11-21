@@ -209,6 +209,10 @@ void Accel::updateFlags() {
 }
 
 void Accel::debugPrint(int i) {
+  if (i = -1){
+    i = _last_frame;
+  }
+  
   Serial.print("(");
   Serial.print(_x[i], 2);
   Serial.print(", ");
