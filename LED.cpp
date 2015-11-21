@@ -49,23 +49,23 @@ void LED::color(float hue) {
 }
 
 void LED::color(uint8_t red, uint8_t green, uint8_t blue) {
-  red_ = red;
-  green_ = green;
-  blue_ = blue;
+  red_ = fmod(red, 255);
+  green_ = fmod(green, 255);
+  blue_ = fmod(blue, 255);
 
   SetHLSFromRGB();
   reflection();
 }
 
-void LED::brightness(float brightness) {
-  brightness_ = brightness;
+void LED::brightness(float brightness) {  
+  brightness_ = fmod(brightness, 1.0);
 
   SetRGBFromHLS();
   reflection();
 }
-//
+
 void LED::saturation(float saturation) {
-	saturation_ = saturation;
+	saturation_ = fmod(saturation, 1.0);
 
 	SetRGBFromHLS();
   reflection();
@@ -78,6 +78,27 @@ void LED::randomcolor() {
 
 void LED::colorcircle(float span) {
   color(hue_ + span);
+}
+
+bool LED::fadeIn(bool loop, float span){
+  if (brightness_ + span < 1.0 || loop){
+    brightness(brightness_ + span);
+    status_ = true;
+  }
+  
+  return status_;
+}
+
+bool LED::fadeOut(bool loop, float span){
+  if (brightness_ - span > 0.0 || loop){
+    brightness(brightness_ - span);
+    status_ = true;
+  }
+  else {
+    status_ = false;
+  }
+  
+  return status_;
 }
 
 void LED::debug_print(){

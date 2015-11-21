@@ -38,6 +38,11 @@ public:
   // led の色をランダムに点灯する
   void randomcolor();
   void colorcircle(float span = 0.005);
+  
+  // fade brightness
+  // return status
+  bool fadeIn(bool loop = false, float span = 0.02);
+  bool fadeOut(bool loop = false, float span = 0.02);
 
   // RGB と HLS の色情報をプリントする
   void debug_print();
