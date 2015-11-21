@@ -1,25 +1,26 @@
 language: python
 python:
-  - "2.7"
+    - "2.7"
 
+# Cache PlatformIO packages using Travis CI container-based infrastructure
 sudo: false
 cache:
-  directories:
-    - "~/.platformio"
+    directories:
+        - "~/.platformio"
 
 env:
-  - PLATFORMIO_CI_SRC=examples/accel
-  - PLATFORMIO_CI_SRC=examples/circle
-  - PLATFORMIO_CI_SRC=examples/fade
-  - PLATFORMIO_CI_SRC=examples/feeling
-  - PLATFORMIO_CI_SRC=examples/led
-  - PLATFORMIO_CI_SRC=examples/random
-  - PLATFORMIO_CI_SRC=examples/tap
-  - PLATFORMIO_CI_SRC=examples/template
-  - PLATFORMIO_CI_SRC=examples/threshold
+    - PLATFORMIO_CI_SRC=examples/accel
+    - PLATFORMIO_CI_SRC=examples/circle
+    - PLATFORMIO_CI_SRC=examples/fade
+    - PLATFORMIO_CI_SRC=examples/feeling
+    - PLATFORMIO_CI_SRC=examples/led
+    - PLATFORMIO_CI_SRC=examples/random
+    - PLATFORMIO_CI_SRC=examples/tap
+    - PLATFORMIO_CI_SRC=examples/template
+    - PLATFORMIO_CI_SRC=examples/threshold
 
 install:
-  - pip install -U platformio
+    - pip install -U platformio
 
 script:
-  - platformio ci --lib="." --board=pro8MHzatmega328
+    - platformio ci --board=pro8MHzatmega328
