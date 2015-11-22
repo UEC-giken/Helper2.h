@@ -1,10 +1,15 @@
 # Helper2.h
 [![Build Status](https://travis-ci.org/UEC-VBSeminar/Helper2.h.svg?branch=master)](https://travis-ci.org/UEC-VBSeminar/Helper2.h)
 
+##### UEC VBSeminar
+
+Arduinoを用いて初心者が直感的にプログラミングをできるようにしたライブラリ。
+
 ## 環境
 
 + Arduino Pro or Pro Mini
 + ATmega 328 (3.3V, 8MHz)
++ [回路図](http://vbseminar.github.io/oc-2015summer/)
 
 ## Class
 
