@@ -81,7 +81,7 @@ void LED::stepcolor(float span) {
 }
 
 bool LED::fadeIn(float span, float max, bool loop) {
-  if (brightness_ + span < max || loop){
+  if (brightness_ + span <= max || loop){
     brightness(brightness_ + span);
     status_ = true;
     return true;
@@ -91,7 +91,7 @@ bool LED::fadeIn(float span, float max, bool loop) {
 }
 
 bool LED::fadeOut(float span, float min, bool loop) {
-  if (brightness_ - span > min || loop){
+  if (brightness_ - span >= min || loop){
     brightness(brightness_ - span);
     status_ = true;
     return true;
