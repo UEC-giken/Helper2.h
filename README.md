@@ -74,7 +74,7 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 + i: 0 - (n_frames - 1) (値が大きいほど新しい, n\_frames は Accel.h にて定義されている)
 + Default: n\_frames = 30, i = n_frame - 1
 
-#### void debug\_print\_threshold()
+#### void debugPrintThreshold()
 
 + 内部で保持する しきい値 の値を Serial でプリントする
 
