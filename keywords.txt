@@ -32,7 +32,7 @@ color	KEYWORD2
 brightness	KEYWORD2
 saturation	KEYWORD2
 randomcolor	KEYWORD2
-colorcircle	KEYWORD2
+stepcolor	KEYWORD2
 fadeIn	KEYWORD2
 fadeOut	KEYWORD2
 debugPrint	KEYWORD2
