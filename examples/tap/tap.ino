@@ -2,19 +2,22 @@
 #include <Wire.h>
 
 void setup() {
-  initialize();
+	initialize();
+
+	led1.on();
+	led1.color(10, 10, 0);
+	led2.off();
+	led1.color(20, 0, 20);
 }
 
 void loop() {
-  led2.on();
-  if (accel.doubletap()) {
-     led2.randomcolor();
-  }
-  
-  if (accel.tap()) {
-    led1.on();
-  } else {
-    led1.off();
-  }
-  wait(20);
+	if (accel.tap()) {
+		led1.randomcolor();
+	}
+
+	if (accel.doubletap()) {
+		led2.flip();
+	}
+
+	wait(200);
 };
