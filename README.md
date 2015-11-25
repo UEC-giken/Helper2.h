@@ -102,7 +102,7 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 
 + LED を消灯していたら点灯に、点灯していたら消灯する
 
-#### void color(uint8_t red, uint8_t green, uint8_t blue)
+#### void color(uint8\_t red, uint8\_t green, uint8\_t blue)
 
 + rgbで色を設定
 + R, G, B はそれぞれ 0 - 255 の値をとる
@@ -124,7 +124,7 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 
 #### void randomColor()
 
-+ ランダムな色を設定する
++ ランダムな色を設定する (hue にランダムな値を入れる)
 
 #### void stepColor(float span = 0.005)
 
