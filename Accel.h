@@ -32,7 +32,7 @@ class Accel {
       _ThMaximumDoubleTapSpace(e),
       _COUNT(20),
       _active(false), _freefall(false), _tap(false), _doubletap(false),
-      _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1),
+      _head_frame(0), _frame_b(10), _last_frame(n_frames - 1),
       _last_size(0), _t_lasttap(0), debug(false)
     {
       for (int i=0; i<30; i++) {
@@ -60,7 +60,7 @@ class Accel {
 
     // 加速度センサ
     ADXL345 adxl;
-    
+
     const int _COUNT;
 
     bool _active;
@@ -70,9 +70,9 @@ class Accel {
 
     // 累積データ配列のシフトされた最初・最後の位置
     int _head_frame;
-    int _half_frame;
+    int _frame_b;
     int _last_frame;
-    
+
     float _x[n_frames];
     float _y[n_frames];
     float _z[n_frames];
