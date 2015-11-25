@@ -7,12 +7,8 @@ extern Adafruit_NeoPixel AN_LED;
 class LED {
 public:
   LED(int8_t num):
-    led_num_(num),
-    status_(false),
-    saturation_(0.7),
-    brightness_(0.3),
-    hue_(0.0)
-  {
+  led_num_(num), status_(false),
+  saturation_(0.7), brightness_(0.3), hue_(0.0) {
     SetRGBFromHLS();
   }
 
@@ -41,7 +37,7 @@ public:
 
   // fade brightness
   // return minまたはmaxに達したときにfalse
-  bool fadeIn(float span = 0.02, float max = 0.5, bool loop = false);
+  bool fadeIn (float span = 0.02, float max = 0.5, bool loop = false);
   bool fadeOut(float span = 0.02, float min = 0.0, bool loop = false);
 
   // RGB と HLS の色情報をプリントする
@@ -59,7 +55,7 @@ private:
   float saturation_, brightness_, hue_;
 
   LED(const LED& origin) :
-    led_num_(origin.led_num_)
+  led_num_(origin.led_num_)
   {}
 
   bool reflection();
