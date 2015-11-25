@@ -32,7 +32,7 @@ class Accel {
       _ThMaximumDoubleTapSpace(e),
       _COUNT(20),
       _active(false), _freefall(false), _tap(false), _doubletap(false),
-      _head_frame(0), _frame_b(10), _last_frame(n_frames - 1),
+      _frame_a(0), _frame_b(10), _latest_frame(n_frames - 1),
       _last_size(0), _t_lasttap(0), debug(false)
     {
       for (int i=0; i<30; i++) {
@@ -69,9 +69,9 @@ class Accel {
     bool _doubletap;
 
     // 累積データ配列のシフトされた最初・最後の位置
-    int _head_frame;
+    int _frame_a;
     int _frame_b;
-    int _last_frame;
+    int _latest_frame;
 
     float _x[n_frames];
     float _y[n_frames];
