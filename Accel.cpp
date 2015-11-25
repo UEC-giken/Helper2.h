@@ -13,15 +13,15 @@ float Accel::clamp(float val, float min, float max) {
 }
 
 float Accel::x() {
-  return _x[_last_frame];
+  return _x[_latest_frame];
 };
 
 float Accel::y() {
-  return _y[_last_frame];
+  return _y[_latest_frame];
 };
 
 float Accel::z() {
-  return _z[_last_frame];
+  return _z[_latest_frame];
 };
 
 
@@ -87,7 +87,7 @@ void Accel::updateAccel() {
   // count が大きくなるほどノイズに強くなる (が遅くなる)
   int sumx = 0, sumy = 0, sumz = 0;
   int rawx = 0, rawy = 0, rawz = 0;
-  
+
   // 水準器
   for(int i=0; i<_COUNT; i++) {
     adxl.readAccel(&rawx, &rawy, &rawz);
@@ -113,19 +113,19 @@ void Accel::updateAccel() {
 
 void Accel::shiftValue(float nx, float ny, float nz) {
   // 位置をシフト
-  _head_frame = (_head_frame + 1) % n_frames;
-  _half_frame = (_half_frame + 1) % n_frames;
-  _last_frame = (_last_frame + 1) % n_frames;
+  _frame_a      = (_frame_a      + 1) % n_frames;
+  _frame_b      = (_frame_b      + 1) % n_frames;
+  _latest_frame = (_latest_frame + 1) % n_frames;
 
   // 最後位置は"最初位置-1"
   // 最初位置が0の時は、最後位置は"全フレーム数-1"
-  _x[_last_frame] = nx;
-  _y[_last_frame] = ny;
-  _z[_last_frame] = nz;
-  _millis[_last_frame] = millis();
+  _x[_latest_frame] = nx;
+  _y[_latest_frame] = ny;
+  _z[_latest_frame] = nz;
+  _millis[_latest_frame] = millis();
 
   float new_size = nx*nx + ny*ny + nz*nz;
-  _diff[_last_frame] = abs(new_size - _last_size);
+  _diff[_latest_frame] = abs(new_size - _last_size);
   _last_size = new_size;
 }
 
@@ -137,27 +137,27 @@ void Accel::resetFlags() {
 }
 
 void Accel::updateFlags() {
-  // 検出をゆるくするため、数フレームほど比較する
-  if (0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 1) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 2) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 3) % n_frames]) ||
-      0.1 < abs(_diff[_last_frame] - _diff[(_last_frame + n_frames - 4) % n_frames])) {
+  // 検出をゆるくするため、直近数フレームのどこかで動いていれば active と判断する
+  if (0.1 < abs(_diff[_latest_frame] - _diff[(_latest_frame + n_frames - 1) % n_frames]) ||
+      0.1 < abs(_diff[_latest_frame] - _diff[(_latest_frame + n_frames - 2) % n_frames]) ||
+      0.1 < abs(_diff[_latest_frame] - _diff[(_latest_frame + n_frames - 3) % n_frames]) ||
+      0.1 < abs(_diff[_latest_frame] - _diff[(_latest_frame + n_frames - 4) % n_frames])) {
     _active = true;
-    
+
     if (debug){
-      Serial.print("DEBUG: _last_frame = ");
-      Serial.print(_last_frame);
+      Serial.print("active: _latest_frame = ");
+      Serial.print(_latest_frame);
       Serial.print("  ");
-      Serial.print(_diff[_last_frame]);
+      Serial.print(_diff[_latest_frame]);
       Serial.print(", ");
-      Serial.print(_diff[(_last_frame - 1) % n_frames]);
+      Serial.print(_diff[(_latest_frame - 1) % n_frames]);
       Serial.print(", ");
-      Serial.print(_diff[(_last_frame - 2) % n_frames]);
+      Serial.print(_diff[(_latest_frame - 2) % n_frames]);
       Serial.print(", ");
-      Serial.print(_diff[(_last_frame - 3) % n_frames]);
+      Serial.print(_diff[(_latest_frame - 3) % n_frames]);
       Serial.print(", ");
-      Serial.println(_diff[(_last_frame - 4) % n_frames]);
-    }    
+      Serial.println(_diff[(_latest_frame - 4) % n_frames]);
+    }
   }
 
   if (_last_size < 0.2) {
@@ -172,7 +172,7 @@ void Accel::updateFlags() {
   *
   * - ThMaxAtFrameA [(m/s^2)^2]
   * - ThMinAtFrameB [(m/s^2)^2]
-  * - ThMaxAtLatastFrame [(m/s^2)^2]
+  * - ThMaxAtLatestFrame [(m/s^2)^2]
   *
   * - ThMaximumSingleTapSpace [ms]
   * - ThMaximumDoubleTapSpace [ms]
@@ -182,16 +182,16 @@ void Accel::updateFlags() {
   * 変化量 = |現在のフレームの加速度|^2 - |直前フレームの加速度|^2 とする。
   * タップ検知: 以下の3条件を満たした時にタップ検知とする
   * - (ThFrameA フレーム前の変化量) < ThMaxAtFrameA
-  * - ThMinAtFrameB < (ThFrameB フレーム前の変化量)
-  * - (最新フレームの変化量) < ThMaxAtLatastFrame
+  * - ThMinAtFrameB < (ThFrameB での変化量)
+  * - (最新フレームでの変化量) < ThMaxAtLatestFrame
   *
   * ダブルタップ検知:
   * - ThMaximumSingleTapSpace フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
   * - ThMaximumSingleTapSpace フレーム以上離れたタップを ダブルタップとする
   * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
-  // (_head_frame+(int)(n_frames/2))%30   (最初+15) % 30がフレームの真ん中
-  if (_diff[_head_frame] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_half_frame] && _diff[_last_frame] < _ThMaxAtLatastFrame) {
+  // (_frame_a+(int)(n_frames/2))%30   (最初+10) % 30 が FrameB
+  if (_diff[_frame_a] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_frame_b] && _diff[_latest_frame] < _ThMaxAtLatestFrame) {
     long int t_diff = millis() - _t_lasttap;
 
     if (_ThMaximumSingleTapSpace < t_diff) {
@@ -208,13 +208,13 @@ void Accel::updateFlags() {
       Serial.print("time diff: ");
       Serial.print(t_diff);
       Serial.print("  ");
-      
+
       if (_doubletap) {
-        Serial.print("doubletapped, _diff[_half_frame] = ");
-        Serial.println(_diff[_half_frame], 2);
+        Serial.print("doubletapped, _diff[_frame_b] = ");
+        Serial.println(_diff[_frame_b], 2);
       } else if (_tap) {
-        Serial.print("tapped, _diff[_half_frame] = ");
-        Serial.println(_diff[_half_frame], 2);
+        Serial.print("tapped, _diff[_frame_b] = ");
+        Serial.println(_diff[_frame_b], 2);
       } else {
         Serial.println("ignored");
       }
@@ -224,9 +224,9 @@ void Accel::updateFlags() {
 
 void Accel::debugPrint(int i) {
   if (i = -1){
-    i = _last_frame;
+    i = _latest_frame;
   }
-  
+
   Serial.print("(");
   Serial.print(_x[i], 2);
   Serial.print(", ");
@@ -243,8 +243,8 @@ void Accel::debugPrintThreshold() {
   Serial.print(_ThMaxAtFrameA);
   Serial.print(", _ThMinAtFrameB: ");
   Serial.print(_ThMinAtFrameB);
-  Serial.print(", _ThMaxAtLatastFrame: ");
-  Serial.print(_ThMaxAtLatastFrame);
+  Serial.print(", _ThMaxAtLatestFrame: ");
+  Serial.print(_ThMaxAtLatestFrame);
   Serial.print(", _ThMaximumSingleTapSpace: ");
   Serial.print(_ThMaximumSingleTapSpace);
   Serial.print(", _ThMaximumDoubleTapSpace: ");
@@ -273,7 +273,7 @@ void Accel::debugInputThreshold() {
     if (j == 5) {
       _ThMaxAtFrameA = atof(&(str[p[0]]));
       _ThMinAtFrameB = atof(&(str[p[1]]));
-      _ThMaxAtLatastFrame = atof(&(str[p[2]]));
+      _ThMaxAtLatestFrame = atof(&(str[p[2]]));
       _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
       _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
 

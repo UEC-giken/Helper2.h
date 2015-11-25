@@ -24,15 +24,15 @@ class Accel {
 
     bool debug;
 
-    Accel(float a = 0.02, float b = 0.20, float c = 0.02, long int d = 130, long int e = 200) :
+    Accel(float a = 0.03, float b = 0.30, float c = 0.03, long int d = 150, long int e = 350) :
       _ThMaxAtFrameA(a),
       _ThMinAtFrameB(b),
-      _ThMaxAtLatastFrame(c),
+      _ThMaxAtLatestFrame(c),
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
       _COUNT(20),
       _active(false), _freefall(false), _tap(false), _doubletap(false),
-      _head_frame(0), _half_frame(n_frames / 2), _last_frame(n_frames - 1),
+      _frame_a(0), _frame_b(10), _latest_frame(n_frames - 1),
       _last_size(0), _t_lasttap(0), debug(false)
     {
       for (int i=0; i<30; i++) {
@@ -54,13 +54,13 @@ class Accel {
   private:
     float _ThMaxAtFrameA;
     float _ThMinAtFrameB;
-    float _ThMaxAtLatastFrame;
+    float _ThMaxAtLatestFrame;
     long int _ThMaximumSingleTapSpace;
     long int _ThMaximumDoubleTapSpace;
 
     // 加速度センサ
     ADXL345 adxl;
-    
+
     const int _COUNT;
 
     bool _active;
@@ -69,10 +69,10 @@ class Accel {
     bool _doubletap;
 
     // 累積データ配列のシフトされた最初・最後の位置
-    int _head_frame;
-    int _half_frame;
-    int _last_frame;
-    
+    int _frame_a;
+    int _frame_b;
+    int _latest_frame;
+
     float _x[n_frames];
     float _y[n_frames];
     float _z[n_frames];
@@ -85,7 +85,7 @@ class Accel {
     Accel(const Accel &other) :
       _ThMaxAtFrameA(other._ThMaxAtFrameA),
       _ThMinAtFrameB(other._ThMinAtFrameB),
-      _ThMaxAtLatastFrame(other._ThMaxAtLatastFrame),
+      _ThMaxAtLatestFrame(other._ThMaxAtLatestFrame),
       _ThMaximumSingleTapSpace(other._ThMaximumSingleTapSpace),
       _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace),
       _COUNT(20)
