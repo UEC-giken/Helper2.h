@@ -8,7 +8,7 @@ void setup() {
 }
 
 void loop() {
-  led1.randomcolor();
+  led1.randomColor();
 
   wait(500);
 }

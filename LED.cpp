@@ -33,7 +33,7 @@ bool LED::flip(){
 
 bool LED::reflection(){
   if (status_) {
-  	return on();
+    return on();
   }
 }
 
@@ -65,18 +65,18 @@ void LED::brightness(float brightness) {
 }
 
 void LED::saturation(float saturation) {
-	saturation_ = fmod(saturation, 1.0);
+  saturation_ = fmod(saturation, 1.0);
 
-	SetRGBFromHLS();
+  SetRGBFromHLS();
   reflection();
 }
 
-void LED::randomcolor() {
+void LED::randomColor() {
   color(static_cast<float>(random(1000)) / 1000);
   reflection();
 }
 
-void LED::stepcolor(float span) {
+void LED::stepColor(float span) {
   color(hue_ + span);
 }
 
@@ -122,22 +122,22 @@ void LED::debugPrint(){
 }
 
 void LED::SetHLSFromRGB() {
-	float max = max(max(red_, green_), blue_);
-	float min = min(min(red_, green_), blue_);
+  float max = max(max(red_, green_), blue_);
+  float min = min(min(red_, green_), blue_);
 
-	float h;
-	if (min == max)
-		h = 0;
-	else if (red_== max)
-		h = 60 * ((green_- blue_) / (max - min));
-	else if (green_== max)
-		h = 60 * ((blue_- red_) / (max - min)) + 120;
-	else if (blue_== max)
-		h = 60 * ((red_- green_) / (max - min)) + 240;
+  float h;
+  if (min == max)
+    h = 0;
+  else if (red_== max)
+    h = 60 * ((green_- blue_) / (max - min));
+  else if (green_== max)
+    h = 60 * ((blue_- red_) / (max - min)) + 120;
+  else if (blue_== max)
+    h = 60 * ((red_- green_) / (max - min)) + 240;
 
-	hue_ = fmod(h, 360) / 360;
-	saturation_ = (max - min) / max;
-	brightness_ = max / 255.0;
+  hue_ = fmod(h, 360) / 360;
+  saturation_ = (max - min) / max;
+  brightness_ = max / 255.0;
 }
 
 void LED::SetRGBFromHLS() {

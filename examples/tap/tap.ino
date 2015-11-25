@@ -12,7 +12,7 @@ void setup() {
 
 void loop() {
 	if (accel.tap()) {
-		led1.randomcolor();
+		led1.randomColor();
 	}
 
 	if (accel.doubletap()) {

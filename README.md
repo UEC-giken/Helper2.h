@@ -21,7 +21,7 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 
 #### float x(), y(), z()
 
-+ 加速度センサーの x, y, z 軸の値 (0.0 - 1.0)
++ 加速度センサーの x, y, z 軸の値 (-1.0 - 1.0)
 
 #### bool active()
 
@@ -102,7 +102,7 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 
 + LED を消灯していたら点灯に、点灯していたら消灯する
 
-#### void color(uint8_t red, uint8_t green, uint8_t blue)
+#### void color(uint8\_t red, uint8\_t green, uint8\_t blue)
 
 + rgbで色を設定
 + R, G, B はそれぞれ 0 - 255 の値をとる
@@ -122,9 +122,13 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 + 彩度を指定
 + 0.0 - 1.0
 
-#### void randomcolor()
+#### void randomColor()
 
-+ ランダムな色を設定する
++ ランダムな色を設定する (hue にランダムな値を入れる)
+
+#### void stepColor(float span = 0.005)
+
++ 現在設定されている hue に span を足したものを 新たな hue として設定する
 
 #### bool fadeIn(float span = 0.02, float max = 0.5, bool loop = false)
 
