@@ -36,8 +36,8 @@ public:
   void saturation(float saturation);
 
   // led の色をランダムに点灯する
-  void randomcolor();
-  void stepcolor(float span = 0.005);
+  void randomColor();
+  void stepColor(float span = 0.005);
 
   // fade brightness
   // return minまたはmaxに達したときにfalse

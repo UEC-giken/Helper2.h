@@ -31,8 +31,8 @@ getStatus	KEYWORD2
 color	KEYWORD2
 brightness	KEYWORD2
 saturation	KEYWORD2
-randomcolor	KEYWORD2
-stepcolor	KEYWORD2
+randomColor	KEYWORD2
+stepColor	KEYWORD2
 fadeIn	KEYWORD2
 fadeOut	KEYWORD2
 debugPrint	KEYWORD2

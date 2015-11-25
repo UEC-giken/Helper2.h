@@ -4,8 +4,8 @@
 void setup() {
   initialize();
 
-  led1.randomcolor();
-  led2.randomcolor();
+  led1.randomColor();
+  led2.randomColor();
   led1.on();
   led2.on();
 }

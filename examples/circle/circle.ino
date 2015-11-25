@@ -9,17 +9,17 @@ void setup() {
 }
 
 void loop() {
-  led1.stepcolor();
+  led1.stepColor();
   led1.debugPrint();
-  led2.stepcolor();
+  led2.stepColor();
   led2.debugPrint();
 
   if (accel.tap()) {
-    led1.randomcolor();
+    led1.randomColor();
   }
 
   if (accel.doubletap()) {
-    led2.randomcolor();
+    led2.randomColor();
   }
 
   wait(100);

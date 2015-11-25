@@ -14,8 +14,8 @@ void setup() {
 
 void loop() {
 	if (accel.freefall()) {
-		led1.stepcolor(0.05);
-		led2.stepcolor(0.05);
+		led1.stepColor(0.05);
+		led2.stepColor(0.05);
 	}
 	else if (accel.active()) {
 		while (accel.active()) {

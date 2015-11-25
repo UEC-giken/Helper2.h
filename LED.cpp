@@ -71,12 +71,12 @@ void LED::saturation(float saturation) {
   reflection();
 }
 
-void LED::randomcolor() {
+void LED::randomColor() {
   color(static_cast<float>(random(1000)) / 1000);
   reflection();
 }
 
-void LED::stepcolor(float span) {
+void LED::stepColor(float span) {
   color(hue_ + span);
 }
 
