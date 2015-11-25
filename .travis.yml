@@ -1,4 +1,4 @@
-language: c++
+language: cpp
 
 env:
   - EXAMPLE_NAME='accel'
@@ -20,12 +20,10 @@ before_install:
   - tar xf arduino-1.6.6-linux64.tar.xz
   - sudo mv arduino-1.6.6 /usr/local/share/arduino
   - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
-  - 
-  - git clone --depth 1 git@github.com:kyontan/adxl345driver.git /usr/local/share/arduino/libraries/adxl345driver
 
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
-  - wget https://github.com/kyontan/adxl345driver/archive/master.zip -O /tmp/adxl345driver.zip
+  - wget https://adxl345driver.googlecode.com/files/ADXL345.zip -O /tmp/adxl345driver.zip
   - unzip /tmp/adxl345driver.zip -d /usr/local/share/arduino/libraries
   - wget https://github.com/adafruit/Adafruit_NeoPixel/archive/master.zip -O /tmp/Adafruit_NeoPixel.zip
   - unzip /tmp/Adafruit_NeoPixel.zip -d /usr/local/share/arduino/libraries
