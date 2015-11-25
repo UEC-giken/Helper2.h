@@ -23,7 +23,7 @@ before_install:
 
 install:
   - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
-  - wget https://adxl345driver.googlecode.com/files/ADXL345.zip -O /tmp/adxl345driver.zip
+  - wget https://github.com/kyontan/adxl345driver/archive/master.zip -O /tmp/adxl345driver.zip
   - unzip /tmp/adxl345driver.zip -d /usr/local/share/arduino/libraries
   - wget https://github.com/adafruit/Adafruit_NeoPixel/archive/master.zip -O /tmp/Adafruit_NeoPixel.zip
   - unzip /tmp/Adafruit_NeoPixel.zip -d /usr/local/share/arduino/libraries
