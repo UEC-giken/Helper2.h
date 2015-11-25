@@ -172,7 +172,7 @@ void Accel::updateFlags() {
   *
   * - ThMaxAtFrameA [(m/s^2)^2]
   * - ThMinAtFrameB [(m/s^2)^2]
-  * - ThMaxAtLatastFrame [(m/s^2)^2]
+  * - ThMaxAtLatestFrame [(m/s^2)^2]
   *
   * - ThMaximumSingleTapSpace [ms]
   * - ThMaximumDoubleTapSpace [ms]
@@ -183,7 +183,7 @@ void Accel::updateFlags() {
   * タップ検知: 以下の3条件を満たした時にタップ検知とする
   * - (ThFrameA フレーム前の変化量) < ThMaxAtFrameA
   * - ThMinAtFrameB < (ThFrameB での変化量)
-  * - (最新フレームでの変化量) < ThMaxAtLatastFrame
+  * - (最新フレームでの変化量) < ThMaxAtLatestFrame
   *
   * ダブルタップ検知:
   * - ThMaximumSingleTapSpace フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
@@ -191,7 +191,7 @@ void Accel::updateFlags() {
   * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
   // (_frame_a+(int)(n_frames/2))%30   (最初+10) % 30 が FrameB
-  if (_diff[_frame_a] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_frame_b] && _diff[_latest_frame] < _ThMaxAtLatastFrame) {
+  if (_diff[_frame_a] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_frame_b] && _diff[_latest_frame] < _ThMaxAtLatestFrame) {
     long int t_diff = millis() - _t_lasttap;
 
     if (_ThMaximumSingleTapSpace < t_diff) {
@@ -243,8 +243,8 @@ void Accel::debugPrintThreshold() {
   Serial.print(_ThMaxAtFrameA);
   Serial.print(", _ThMinAtFrameB: ");
   Serial.print(_ThMinAtFrameB);
-  Serial.print(", _ThMaxAtLatastFrame: ");
-  Serial.print(_ThMaxAtLatastFrame);
+  Serial.print(", _ThMaxAtLatestFrame: ");
+  Serial.print(_ThMaxAtLatestFrame);
   Serial.print(", _ThMaximumSingleTapSpace: ");
   Serial.print(_ThMaximumSingleTapSpace);
   Serial.print(", _ThMaximumDoubleTapSpace: ");
@@ -273,7 +273,7 @@ void Accel::debugInputThreshold() {
     if (j == 5) {
       _ThMaxAtFrameA = atof(&(str[p[0]]));
       _ThMinAtFrameB = atof(&(str[p[1]]));
-      _ThMaxAtLatastFrame = atof(&(str[p[2]]));
+      _ThMaxAtLatestFrame = atof(&(str[p[2]]));
       _ThMaximumSingleTapSpace = atol(&(str[p[3]]));
       _ThMaximumDoubleTapSpace = atol(&(str[p[4]]));
 

@@ -27,7 +27,7 @@ class Accel {
     Accel(float a = 0.03, float b = 0.30, float c = 0.03, long int d = 150, long int e = 350) :
       _ThMaxAtFrameA(a),
       _ThMinAtFrameB(b),
-      _ThMaxAtLatastFrame(c),
+      _ThMaxAtLatestFrame(c),
       _ThMaximumSingleTapSpace(d),
       _ThMaximumDoubleTapSpace(e),
       _COUNT(20),
@@ -54,7 +54,7 @@ class Accel {
   private:
     float _ThMaxAtFrameA;
     float _ThMinAtFrameB;
-    float _ThMaxAtLatastFrame;
+    float _ThMaxAtLatestFrame;
     long int _ThMaximumSingleTapSpace;
     long int _ThMaximumDoubleTapSpace;
 
@@ -85,7 +85,7 @@ class Accel {
     Accel(const Accel &other) :
       _ThMaxAtFrameA(other._ThMaxAtFrameA),
       _ThMinAtFrameB(other._ThMinAtFrameB),
-      _ThMaxAtLatastFrame(other._ThMaxAtLatastFrame),
+      _ThMaxAtLatestFrame(other._ThMaxAtLatestFrame),
       _ThMaximumSingleTapSpace(other._ThMaximumSingleTapSpace),
       _ThMaximumDoubleTapSpace(other._ThMaximumDoubleTapSpace),
       _COUNT(20)
