@@ -1,15 +1,21 @@
 # Helper2.h
 [![Build Status](https://travis-ci.org/UEC-VBSeminar/Helper2.h.svg?branch=master)](https://travis-ci.org/UEC-VBSeminar/Helper2.h)
 
-##### UEC VBSeminar
+## About
 
-Arduinoを用いて初心者が直感的にプログラミングをできるようにしたライブラリ。
+Arduino と フルカラーLED (PL9823), 加速度センサー (ADXL345) を用いたハードウェアで、初心者が直感的にプログラミングをできるようにしたライブラリ。
 
-## 環境
+## Environment
 
-+ Arduino Pro or Pro Mini
-+ ATmega 328 (3.3V, 8MHz)
++ Arduino Pro or Pro Mini (ATmega 328 / 3.3V, 8MHz)
 + [回路図](http://vbseminar.github.io/oc-2015summer/)
+
+## Required Library
+
+このライブラリを使用するためには、以下の2つのライブラリが必要です。
+
++ [Adafruit NeoPixel Library](https://github.com/adafruit/Adafruit_NeoPixel)
++ [adxl345driver](https://github.com/kyontan/adxl345driver)
 
 ## Class
 
@@ -146,3 +152,11 @@ Arduinoを用いて初心者が直感的にプログラミングをできるよ�
 
 + デバッグ用
 + Serial にて RGB と HLS の値を 出力する
+
+## Authors
+
+- Kyosuke Tanaka <kyontan@monora.me>
+- Hiroki Kawahara <h-otter@outlook.jp>
+- Azuma Ikeda <hogextend@gmail.com>
+- Issei Gotoda <issei.gtd@gmail.com>
+- Shoki Kishida <shoki0417@gmail.com>
