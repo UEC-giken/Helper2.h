@@ -1,25 +1,36 @@
-language: c++
+language: cpp
+
+env:
+  - EXAMPLE_NAME='accel'
+  - EXAMPLE_NAME='circle'
+  - EXAMPLE_NAME='fade'
+  - EXAMPLE_NAME='feeling'
+  - EXAMPLE_NAME='led'
+  - EXAMPLE_NAME='random'
+  - EXAMPLE_NAME='tap'
+  - EXAMPLE_NAME='template'
+  - EXAMPLE_NAME='threshold'
+
 before_install:
-- /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile
-  --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16
-- sleep 3
-- export DISPLAY=:1.0
-- wget http://downloads.arduino.cc/arduino-1.6.6-linux64.tar.xz
-- tar xf arduino-1.6.6-linux64.tar.xz
-- sudo mv arduino-1.6.6 /usr/local/share/arduino
-- sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+  - /sbin/start-stop-daemon --start --quiet --pidfile /tmp/custom_xvfb_1.pid --make-pidfile
+    --background --exec /usr/bin/Xvfb -- :1 -ac -screen 0 1280x1024x16
+  - sleep 3
+  - export DISPLAY=:1.0
+  - wget http://downloads.arduino.cc/arduino-1.6.6-linux64.tar.xz
+  - tar xf arduino-1.6.6-linux64.tar.xz
+  - sudo mv arduino-1.6.6 /usr/local/share/arduino
+  - sudo ln -s /usr/local/share/arduino/arduino /usr/local/bin/arduino
+
 install:
-- ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
+  - ln -s $PWD /usr/local/share/arduino/libraries/Helper2.h
+  - wget https://github.com/kyontan/adxl345driver/archive/master.zip -O /tmp/adxl345driver.zip
+  - unzip /tmp/adxl345driver.zip -d /usr/local/share/arduino/libraries
+  - wget https://github.com/adafruit/Adafruit_NeoPixel/archive/master.zip -O /tmp/Adafruit_NeoPixel.zip
+  - unzip /tmp/Adafruit_NeoPixel.zip -d /usr/local/share/arduino/libraries
+
 script:
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/accel/accel.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/circle/circle.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/fade/fade.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/feeling/feeling.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/led/led.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/random/random.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/tap/tap.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/template/template.ino
-- arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/threshold/threshold.ino
+  - arduino --verify --board arduino:avr:pro:cpu=8MHzatmega328 $PWD/examples/$EXAMPLE_NAME/$EXAMPLE_NAME.ino
+
 notifications:
   slack:
     secure: MoQUK6r0tW3RFi8gmMeX8JJFVbqSegCg8H/hy4UotB+m9KC42W741rUMX3PGxvVTXFfOWYxNTIpSnzxL8ePD7PxpeBUddCESRGr548jrSsjZpqF/SBsHQkyzBtvMnk5J4Vm4KoHo5Ch1kkMajVMBGHHvfe1VpHOkvi1s5aUQOEPkAzkyINTmgxpXWuXm9ajJelgo/rXmynD52GyzOm9pCJRPsion/Cqmdtz7Ww6XDFcgXyDZzfDT9wt93OR+HPFXYqJwe0SzSSLYqGb1/zV8RxEVC7vt7iaPK24p9W1h+FlDta5E+txWTrI08eFhROiGaFN1ICXbGnlKI0ErPXgRnsdHjHtbJK1Y9RAa0hyw8ZbjUE15ZEKqDhn81sLLkTKsjjyUNB7UNG4uYYJDD+zthZxn2Q/lVETcWmvxEgNMPNmVAB1vJtAghaZRTcB/nVPEdeE0v5DUH6ZCUYL/VEMFHHoSoCofce5e+NZFRb14J6kvVq4c5ahjt+fBHmg3yJBntYsSOlJIBcFqz+Ttze7GmFx8o6Gcns/VbGjlfcnABG1hmoRE2rxH1KV0rXE3Ph2wrAYVbZD81IFPT0lEsrspg1S/IcOa56lPHn7jurJ8B1gNxIoYnceZUuqB5IUrWORGDm1uWC7hp7aBht5VguZV0Mbp1ORJbCsYEUwtHpFIhck=
