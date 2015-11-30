@@ -186,9 +186,9 @@ void Accel::updateFlags() {
   * - (最新フレームでの変化量) < ThMaxAtLatestFrame
   *
   * ダブルタップ検知:
-  * - ThMaximumSingleTapSpace フレーム以内にあったタップは 同タップとする (ダブルタップとは検知しない)
-  * - ThMaximumSingleTapSpace フレーム以上離れたタップを ダブルタップとする
-  * - ThMaximumDoubleTapSpace フレーム以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace[ms] 以内にあったタップは 同タップとする (ダブルタップとは検知しない)
+  * - ThMaximumSingleTapSpace[ms] 以上離れたタップを ダブルタップとする
+  * - ThMaximumDoubleTapSpace[ms] 以上離れたタップは 異なるタップとする  (ダブルタップとは検知しない)
   */
   // (_frame_a+(int)(n_frames/2))%30   (最初+10) % 30 が FrameB
   if (_diff[_frame_a] < _ThMaxAtFrameA && _ThMinAtFrameB < _diff[_frame_b] && _diff[_latest_frame] < _ThMaxAtLatestFrame) {
