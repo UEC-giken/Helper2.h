@@ -42,10 +42,6 @@ bool Accel::doubletap() {
 };
 
 void Accel::init() {
-  // 加速度センサ の 初期化
-  sendi2c(ADXL345_ID, 0x2C, 0b00001100); // 3200Hz 書き出し
-  sendi2c(ADXL345_ID, 0x31, 0b00001000); // full resolution mode
-
   adxl.powerOn();
 
   adxl.setRangeSetting(2); // 測定範囲 (何G まで測定するか)
@@ -281,12 +277,4 @@ void Accel::debugInputThreshold() {
     }
   }
 }
-
-// I2C通信
-void Accel::sendi2c(int8_t id, int8_t reg, int8_t data) {
-  Wire.beginTransmission(id); // Adxl345 のアドレス: 0x1D
-  Wire.write(reg);
-  Wire.write(data);
-  Wire.endTransmission();
-};
 
