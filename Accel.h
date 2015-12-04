@@ -3,9 +3,6 @@
 
 #pragma once
 
-// I2C
-// 直接接続だと 0x53, そうでないと 0x1D
-const uint8_t ADXL345_ID = 0x53;
 const uint8_t n_frames = 30;
 
 class Accel {
@@ -94,6 +91,5 @@ class Accel {
     // 新しい加速度の値を追加し、最も古い加速度の値を削除します。
     void shiftValue(float nx, float ny, float nz);
 
-    void sendi2c(int8_t id, int8_t reg, int8_t data);
     static float clamp(float val, float min, float max);
 };
