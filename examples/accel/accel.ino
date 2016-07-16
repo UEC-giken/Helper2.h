@@ -5,7 +5,7 @@ void setup() {
 	initialize();
 
 	led1.off();
-	led2.color(0);
+	led1.color(0.5);
 	led2.off();
 	led2.color(0.5);
 }
@@ -24,4 +24,4 @@ void loop() {
 	}
 
 	wait(20);
-};
+}
